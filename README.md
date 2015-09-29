@@ -1,2 +1,7 @@
-# hochschule-mannheim
-Übungen und Materialien begleitend zum Studium in Hochschule Mannheim
+# Hochschule Mannheim
+
+Übungen und Materialien begleitend zum Studium in Hochschule Mannheim.
+
+## Collaborators
+
+marcelherd
