@@ -55,7 +55,7 @@
 * **Repräsentation**
 
 ⋅⋅⋅Die Repräsentation beschreibt, wie die Daten angezeigt werden.  
-⋅⋅⋅**Bsp:** Dieses Dokument [1] ist in der Markdown Syntax geschrieben.
+⋅⋅⋅**Bsp:** Dieses Dokument<sup>1</sup> ist in der Markdown Syntax geschrieben.
 
 * **Daten**
 
@@ -72,4 +72,4 @@
 ⋅⋅⋅Bei einer Information handelt es sich um Daten, die um deren Bedeutung in der realen Welt ergänzt werden.  
 ⋅⋅⋅**Bsp:** 42,-€ Fahrtkosten
 
-  [1]: https://github.com/marcelherd/hochschule-mannheim/blob/master/1IB/GDI/%C3%9Cbung%201/Aufgabe%201.md        "Link zum Dokument"
+  [1]: https://github.com/marcelherd/hochschule-mannheim/blob/master/1IB/GDI/%C3%9Cbung%201/Aufgabe%201.md
