@@ -26,7 +26,7 @@
 
 * **Rekursion**
 
-⋅⋅⋅Rekursion ist ein Prinzip, nach dem ein Großes Problem wiederholt in ein kleineres Problem gebracht wird, bis das Problem gelöst ist. Beispiel: !5 -> 5*!4 -> 5*4*!3 … 
+⋅⋅⋅Rekursion ist ein Prinzip, nach dem ein Großes Problem wiederholt in ein kleineres Problem gebracht wird, bis das Problem gelöst ist. Beispiel: 5! -> 5*4! -> 5*4*3! … 
 
 * **Konsistenz**
 
@@ -72,4 +72,4 @@
 ⋅⋅⋅Bei einer Information handelt es sich um Daten, die um deren Bedeutung in der realen Welt ergänzt werden.  
 ⋅⋅⋅**Bsp:** 42,-€ Fahrtkosten
 
-  [1]: https://github.com/marcelherd/hochschule-mannheim/blob/master/1IB/GDI/%C3%9Cbung%201/Aufgabe%201.md
+  [1] https://github.com/marcelherd/hochschule-mannheim/blob/master/1IB/GDI/%C3%9Cbung%201/Aufgabe%201.md
