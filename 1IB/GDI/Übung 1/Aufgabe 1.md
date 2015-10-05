@@ -35,6 +35,7 @@
 * **Redundanz**
 
 ⋅⋅⋅Von Redundanz spricht man, wenn Informationen mehrfach vorliegen, redundante Informationen können also ohne Informationsverlust gelöscht werden.
+<br><br><br><br>
 
 * **Suchen**
 
