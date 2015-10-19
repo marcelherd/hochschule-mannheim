@@ -2,17 +2,23 @@ package com.marcelherd.uebung3;
 
 import static gdi.MakeItSimple.*;
 
-import java.util.Arrays;
-
-import gdi.MISException;
-
 /**
  * Diese Klasse berechnet die Prüfziffer einer ISBN-13.
  * 
- * Testfälle:
- *  -1			  - ISBN zu kurz / klein (ungültig) -> MISException
- *  1231231231231 - ISBN zu lang / groß (ungültig) -> MISException
+ * Testfälle
+ * ------------------------
  * 
+ * Input				Expected
+ *  0					Fehler
+ *  -1					Fehler
+ *  abcdefg				Fehler
+ *  978-0-306-40615-7	Fehler
+ *  978-0-306-40615		Fehler
+ *  978abc640615		Fehler
+ *  -978030640615		Fehler
+ *  -97803064061		Fehler
+ *  978030640615		Gültig
+ *  
  * @author Marcel Herd
  * @author Manuel Schwalm
  * @author Firas Romdhane
@@ -21,33 +27,58 @@ import gdi.MISException;
 public class ISBNBerechnung {
 
 	public static void main(String[] args) {
-		print("Bitte geben Sie die ISBN-13 (ohne Pruefziffer und Bindestriche) ein: ");
-		String isbn = readLine();
+		boolean isbnValid;
+		String isbn;
+		println("Bitte geben Sie eine ISBN ohne Bindestriche und Buchstaben ein!");
 		
-		char[] chars = isbn.toCharArray();
-		int[] zahlen = new int[12];
-		for (int i = 0; i < chars.length; i++) {
-			zahlen[i] = Integer.valueOf(chars[i] + "");
-		}
-		System.out.println(Arrays.toString(zahlen));
+		do {
+			isbnValid = true;
+			
+			isbn = readLine();
+			
+			//TODO: Validierung mit Prädikaten
+			if (isbn.length() != 12) {
+				println("Die ISBN muss 12 Ziffern lang sein! Bitte erneut eingeben!");
+				isbnValid = false;
+			}
+			
+			for (int i = 0; i < isbn.length(); i++) {
+				if (isbn.charAt(i) < '0' || isbn.charAt(i) > '9') {
+					println("Die ISBN darf nur aus Zahlen bestehen! Bitte erneut eingeben!");
+					isbnValid = false;
+					break;
+				}
+			}
+		} while (!isbnValid);
+
+		int sum = 0;
 		
-		int summe = 0;
-		for (int i = 0; i < zahlen.length; i++) {
-			if ((i+1) % 2 == 0) {
-				summe += zahlen[i] * 3;
+		for (int i = 0; i < isbn.length(); i++) {
+			if ((i + 1) % 2 == 0) {
+				sum += charToInt(isbn.charAt(i)) * 3;
 			} else {
-				summe += zahlen[i];
+				sum += charToInt(isbn.charAt(i));
 			}
 		}
 		
-		String summeString = summe + "";
-		int letzteZahl = Integer.valueOf(summeString.charAt(summeString.length() - 1) + "");
-		
 		int pruefziffer = 0;
-		if (summe != 10) {
-			pruefziffer = 10 - letzteZahl;
+		
+		// Wenn die letzte Zahl der Summe 0 ist, so bleibt die Prüfziffer 0
+		if (sum % 10 != 0) {
+			pruefziffer = 10 - sum % 10;
 		}
-		println(pruefziffer);
+		
+		print("Pruefziffer:" + pruefziffer);
+	}
+	
+	/**
+	 * Diese Funktion konvertiert einen gegebenen char zu int.
+	 * 
+	 * @param c char der konvertiert werden soll
+	 * @return int
+	 */
+	private static int charToInt(char c) {
+		return c - '0';
 	}
 
 }
