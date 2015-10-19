@@ -77,7 +77,7 @@ public class ISBNBerechnung {
 	 * @param c char der konvertiert werden soll
 	 * @return int
 	 */
-	private static int charToInt(char c) {
+	private static int charToInt(final char c) {
 		return c - '0';
 	}
 
