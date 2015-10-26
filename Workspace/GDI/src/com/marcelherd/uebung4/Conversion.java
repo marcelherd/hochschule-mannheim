@@ -51,13 +51,10 @@ public class Conversion {
 			}
 
 			if (number.charAt(number.length() - 1) - '0' > max.charAt(max.length() - 1) - '0') {
-
 				if (sign == 1) {
 					valid = false;
-				} else {
-					if (number.charAt(number.length() - 1) != '8') {
-						valid = false;
-					}
+				} else if (number.charAt(number.length() - 1) != '8') {
+					valid = false;
 				}
 			}
 		}
