@@ -34,7 +34,7 @@ public class Conversion {
 		}
 
 		String max = Integer.MAX_VALUE + "";
-
+		boolean smaller = false;
 		/*
 		 * In dieser If-Abfrage wird überprüft, ob die eingegebene Zahl in einer
 		 * Integer Variable gespeichert werden kann
@@ -44,9 +44,11 @@ public class Conversion {
 				valid = false;
 			}
 
-			for (int i = 0; i < number.length() - 1 && valid; i++) {
+			for (int i = 0; i < number.length() - 1 && valid && !smaller; i++) {
 				if (number.charAt(i) - '0' > max.charAt(i) - '0') {
 					valid = false;
+				} else if (number.charAt(i) - '0' < max.charAt(i) - '0') {
+					smaller = true;
 				}
 			}
 
