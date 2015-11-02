@@ -15,7 +15,7 @@ public class Palindrome {
 		}
 	}
 
-	private static boolean isPalindrome(String text) {
+	public static boolean isPalindrome(String text) {
 		text = removeSpaces(text);
 		text = toLowerCase(text);
 
@@ -28,7 +28,7 @@ public class Palindrome {
 		return text.equals(palindrome);
 	}
 
-	private static String toLowerCase(String text) {
+	public static String toLowerCase(String text) {
 		String retval = "";
 
 		for (int i = 0; i < text.length(); i++) {
@@ -44,7 +44,7 @@ public class Palindrome {
 		return retval;
 	}
 
-	private static String removeSpaces(String text) {
+	public static String removeSpaces(String text) {
 		String retval = "";
 
 		for (int i = 0; i < text.length(); i++) {

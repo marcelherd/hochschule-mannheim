@@ -17,7 +17,7 @@ public class Conversion {
 		println(parseInteger(number));
 	}
 	
-	private static int parseInteger(String number) {
+	public static int parseInteger(String number) {
 		int power = 1;
 		int sign = 1;
 		int sum = 0;

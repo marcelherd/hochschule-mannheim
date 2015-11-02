@@ -41,7 +41,7 @@ public class SumUp {
 	 * @param numbers int[] Integer die aufsummiert werden sollen.
 	 * @return int Summe
 	 */
-	private static int sumUpNumbers(int[] numbers) {
+	public static int sumUpNumbers(int[] numbers) {
 		int sum = 0;
 
 		for (int i = 0; i < numbers.length; i++) {
