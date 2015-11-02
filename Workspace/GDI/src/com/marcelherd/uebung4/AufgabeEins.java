@@ -55,7 +55,19 @@ public class AufgabeEins {
 			print(number / power);
 			print(',');
 			print(' ');
-			number -= (number / power) * power;
+			// Korrekturschritt für vorhandene Nullen
+			int newNumber = number - (number / power) * power;
+
+			        power /= 10;
+			        while(newNumber < power && power >= 10){
+			            print('0');
+			            print(',');
+			            print(' ');
+
+			            power /= 10;
+			        }
+			        number = newNumber;
+
 		}
 	}
 
@@ -71,7 +83,7 @@ public class AufgabeEins {
 		int length = 1;
 		int power = 10;
 
-		while (power < number) {
+		while (power <= number) {
 			power *= 10;
 			length++;
 		}
