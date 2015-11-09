@@ -120,7 +120,7 @@ public class StringExtensions {
 		String retval = "[";
 		
 		for (int i = 0; i < array.length; i++) {
-			String delimiter = (i == array.length - 1 ? "" : ", ");
+			String delimiter = (i == array.length - 1 ? "" : ", "); // Kein Komma nach dem letzten Element
 			retval += "\"" + array[i] + "\"" + delimiter;
 		}
 		
