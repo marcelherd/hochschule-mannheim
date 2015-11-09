@@ -5,7 +5,7 @@ import static gdi.MakeItSimple.*;
 public class StringExtensions {
 
 	public static void main(String[] args) {
-		println("aeiouäüöfjdsü903953h0ßfsaÄÜÜÖÜDÜPK\n" + toUpper("aeiouäüöfjdsü903953h0ßfsaÄÜÜÖÜDÜPK"));
+		println("aeiouäüöfjdsü903953h0ßfsaÄÜÜÖÜDÜPK.\n" + toUpper("aeiouäüöfjdsü903953h0ßfsaÄÜÜÖÜDÜPK."));
 		String[] s = split("", ';');
 		for(String k : s){
 			println(k);
@@ -14,22 +14,23 @@ public class StringExtensions {
 	}
 
 	public static String toUpper(String original) {
-		String upperOriginal = "";
+		String retval = "";
+		
 		for (int i = 0; i < original.length(); i++) {
-			char currentCharacter = original.charAt(i);
-			if (currentCharacter >= 'a' && currentCharacter <= 'z') {
-				upperOriginal += (char) (currentCharacter - 'a' + 'A');
-			} else if (currentCharacter == 'ä') {
-				upperOriginal += 'Ä';
-			} else if (currentCharacter == 'ö') {
-				upperOriginal += 'Ö';
-			} else if (currentCharacter == 'ü') {
-				upperOriginal += 'Ü';
+			char c = original.charAt(i);
+			if (c >= 'a' && c <= 'z') {
+				retval += (char) (c - 'a' + 'A');
+			} else if (c == 'ä' || c== 'ü' || c== 'ö') {
+				/* Die Minuskel der Umlaute sind genau 32 Stellen von ihren Majuskeln entfernt.
+				 * (char) 32 entspricht ' '
+				 */
+				retval += (char) (c - ' ');
 			} else {
-				upperOriginal += currentCharacter;
+				retval += c;
 			}
 		}
-		return upperOriginal;
+		
+		return retval;
 	}
 	
 	
