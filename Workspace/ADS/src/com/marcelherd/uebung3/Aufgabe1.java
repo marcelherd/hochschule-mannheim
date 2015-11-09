@@ -95,7 +95,7 @@ public class Aufgabe1 {
 		String retval = "[";
 		
 		for (int i = 0; i < array.length; i++) {
-			String delimiter = (i == array.length - 1 ? "" : ", "); // Kein Komma nach dem letzten Element
+			String delimiter = (i == array.length - 1 ? "" : ", "); // omit trailing comma
 			retval += array[i] + delimiter;
 		}
 		
