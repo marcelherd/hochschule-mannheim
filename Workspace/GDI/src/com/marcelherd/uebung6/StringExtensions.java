@@ -2,15 +2,34 @@ package com.marcelherd.uebung6;
 
 import static gdi.MakeItSimple.*;
 
+import java.util.Arrays;
+
 public class StringExtensions {
 
 	public static void main(String[] args) {
-		println("aeiouäüöfjdsü903953h0ßfsaÄÜÜÖÜDÜPK.\n" + toUpper("aeiouäüöfjdsü903953h0ßfsaÄÜÜÖÜDÜPK."));
-		String[] s = split("", ';');
-		for(String k : s){
-			println(k);
-		}
-		println(scan("asdasdsa", "asdasdsa") + "");
+		println("Calling toUpper(String original)");
+		print("Please enter parameter 1: ");
+		println("Output: " + toUpper(readLine()));
+		
+		println();
+		
+		println("Calling split(String original, char delimiter)");
+		print("Please enter parameter 1: ");
+		String original = readLine();
+		print("Please enter parameter 2: ");
+		char delimiter = readChar();
+		println("Output: " + Arrays.toString(split(original, delimiter)));
+		
+		// readChar() hinterlässt \n im Buffer
+		readLine();
+		println();
+		
+		println("Calling scan(String original, String needle)");
+		print("Please enter parameter 1: ");
+		original = readLine();
+		print("Please enter parameter 2: ");
+		String needle = readLine();
+		println("Output: " + scan(original, needle));
 	}
 
 	public static String toUpper(String original) {
