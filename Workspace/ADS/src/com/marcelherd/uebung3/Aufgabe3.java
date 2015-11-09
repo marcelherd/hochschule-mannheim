@@ -9,6 +9,7 @@ public class Aufgabe3 {
 	private static final int TEST_CASE_LARGE = 4096;
 	
 	public static void main(String[] args) {
+		println("------------------------------------------------");
 		println("Default insertion sort (as discussed in lecture)");
 		println("------------------------------------------------");
 		
@@ -29,6 +30,28 @@ public class Aufgabe3 {
 		int[] large = generateRandomArray(TEST_CASE_LARGE);
 		println("\nSorting array of length " + TEST_CASE_LARGE + ":");
 		insertionSort(large);
+		
+		println("\n------------------------------------------------");
+		println("Insertion sort variant");
+		println("------------------------------------------------");
+		
+		trivial = new int[] { 44, 6, 55, 30, 94, 18 }; // example from slides
+		println("Example array (unsorted): " + arrayToString(trivial));
+		insertionSortVariant(trivial);
+		println("Example array (sorted): " + arrayToString(trivial)); // just making sure it actually works
+		println();
+		
+		small = generateRandomArray(TEST_CASE_SMALL);
+		println("Sorting array of length " + TEST_CASE_SMALL + ":");
+		insertionSortVariant(small);
+		
+		medium = generateRandomArray(TEST_CASE_MEDIUM);
+		println("\nSorting array of length " + TEST_CASE_MEDIUM + ":");
+		insertionSortVariant(medium);
+		
+		large = generateRandomArray(TEST_CASE_LARGE);
+		println("\nSorting array of length " + TEST_CASE_LARGE + ":");
+		insertionSortVariant(large);
 	}
 	
 	public static void insertionSort(int[] array) {
@@ -55,8 +78,18 @@ public class Aufgabe3 {
 		println("Number of key comparisons: " + keyComparisons);
 	}
 	
+	public static void insertionSortVariant(int[] array) {
+		int permutations = -1;
+		int keyComparisons = -1;
+		
+		//TODO binäre Suche von Aufgabe 1 erforderlich
+		
+		println("Number of permutations: " + permutations);
+		println("Number of key comparisons: " + keyComparisons);
+	}
+	
 	/**
-	 * Creates an array with random values between 1 and 4096
+	 * Creates an array filled with random values between 1 and 4096
 	 * 
 	 * @param length Array length
 	 * @return int[] array
