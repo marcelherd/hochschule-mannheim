@@ -1,69 +1,106 @@
 package com.marcelherd.uebung3;
 
+import static gdi.MakeItSimple.*;
+
 public class Aufgabe1 {
+	
+	public static final int NO_KEY = -1;
 
 	public static void main(String[] args) {
-
+		int[] testArray = { 1, 3, 5, 2, 8, 6, 0, 7, 4, 9, 6, 1, 3, 9, 2, 5, 8, 4, 7, 0 };
+		println("Test Array: " + arrayToString(testArray));
+		print("Please enter a key: ");
+		int key = readInt();
+		
+		println("a) linearSearchUntilLast(int[] array, int key)");
+		println("Result: " + linearSearchUntilLast(testArray, key));
+		
+		println("b) linearSearchUntilFirst(int[] array, int key)");
+		println("Result: " + linearSearchUntilFirst(testArray, key));
+		
+		println("c) binarySearchRecursively(int[] array, int key, int u, int o)");
+		println("Result: " + binarySearchRecursively(testArray, key, 1, testArray.length));
+		
+		println("d) binarySearchIteratively(int[] array, int key)");
+		println("Result: " + binarySearchIteratively(testArray, key));
 	}
 
-	public static int linearSearchComplete(int toSearch, int[] toBrowse) {
-		int index = -1;
-		for (int i = 0; i < toBrowse.length; i++) {
-			if (toBrowse[i] == toSearch) {
+	// a)
+	public static int linearSearchUntilLast(int[] array, int key) {
+		int index = NO_KEY; // default: no element found
+		
+		for (int i = 0; i < array.length; i++) {
+			if (array[i] == key) {
 				index = i;
 			}
 		}
+		
 		return index;
 	}
 
-	public static int linearSearchUntilFirst(int toSearch, int[] toBrowse) {
-		int index = -1;
+	// b)
+	public static int linearSearchUntilFirst(int[] array, int key) {
+		int index = NO_KEY; // default: no element found
 		boolean found = false;
-		for (int i = 0; i < toBrowse.length && !found; i++) {
-			if (toBrowse[i] == toSearch) {
+		
+		for (int i = 0; i < array.length && !found; i++) {
+			if (array[i] == key) {
 				index = i;
 				found = true;
 			}
 		}
+		
 		return index;
 	}
 
-	public static int binarySearchRecursively(int toSearch, int[] toBrowse, int u, int o) {
-		int noKey = -1;
-		int actualIndex = (u + o) / 2;
+	// c)
+	public static int binarySearchRecursively(int[] array, int key, int u, int o) {
+		int currentIndex = (u + o) / 2;
+		
 		if (o - u <= 0) {
-			return noKey;
-		}
-		if (toSearch == toBrowse[actualIndex]) {
-
-			return actualIndex;
-		} else if (toSearch > toBrowse[actualIndex]) {
-			u = actualIndex + 1;
+			return NO_KEY;
+		} else if (key == array[currentIndex]) { // found the key
+			return currentIndex;
+		} else if (key > array[currentIndex]) {
+			u = currentIndex + 1; // resume search in upper half
 		} else {
-			o = actualIndex - 1;
+			o = currentIndex - 1; // resume search in lower half
 		}
 
-		return binarySearchRecursively(toSearch, toBrowse, u, o);
-
+		return binarySearchRecursively(array, key, u, o);
 	}
 
-	public static int binarySearchIteraly(int toSearch, int[] toBrowse) {
-		int noKey = -1;
-		int u = 0;
-		int o = toBrowse.length - 1;
-		int actualIndex = (u + o) / 2;
+	// d)
+	public static int binarySearchIteratively(int[] array, int key) {
+		int u = 1;
+		int o = array.length - 1;
+		int currentIndex = (u + o) / 2;
 
 		while (o - u >= 0) {
-			actualIndex = (u + o) / 2;
-			if (toSearch == toBrowse[actualIndex]) {
-
-				return actualIndex;
-			} else if (toSearch > toBrowse[actualIndex]) {
-				u = actualIndex + 1;
+			currentIndex = (u + o) / 2;
+			
+			if (key == array[currentIndex]) { // found the key
+				return currentIndex;
+			} else if (key > array[currentIndex]) {
+				u = currentIndex + 1; // resume search in upper half
 			} else {
-				o = actualIndex - 1;
+				o = currentIndex - 1; // resume search in lower half
 			}
 		}
-		return noKey;
+		
+		return NO_KEY;
 	}
+	
+	private static String arrayToString(int[] array) {
+		String retval = "[";
+		
+		for (int i = 0; i < array.length; i++) {
+			String delimiter = (i == array.length - 1 ? "" : ", "); // Kein Komma nach dem letzten Element
+			retval += array[i] + delimiter;
+		}
+		
+		retval += "]";
+		return retval;
+	}
+	
 }
