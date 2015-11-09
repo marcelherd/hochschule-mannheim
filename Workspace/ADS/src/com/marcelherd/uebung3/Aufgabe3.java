@@ -39,18 +39,14 @@ public class Aufgabe3 {
 			int j = i;
 			int toBeInserted = array[i]; // remember the element that is to be inserted
 			
-			boolean searchingPosition = true; 
-			while (j > 0 && searchingPosition) {
+			while (j > 0 && array[j - 1] > toBeInserted) { // key comparison
 				keyComparisons++;
-				
-				if (array[j - 1] >= toBeInserted) { // key comparison
-					array[j] = array[j - 1]; // shifting elements 'to the right' -> permutation
-					permutations++;
-					j -= 1;
-				} else { // found insert position
-					searchingPosition = false; // break condition
-				}
+				array[j] = array[j - 1]; // shifting elements 'to the right' -> permutation
+				permutations++;
+				j -= 1;
 			}
+			
+			keyComparisons++; // Don't forget the break condition comparison
 			array[j] = toBeInserted; // permutation
 			permutations++;
 		}
