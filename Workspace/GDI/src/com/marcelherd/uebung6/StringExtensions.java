@@ -2,8 +2,6 @@ package com.marcelherd.uebung6;
 
 import static gdi.MakeItSimple.*;
 
-import java.util.Arrays;
-
 public class StringExtensions {
 
 	public static void main(String[] args) {
@@ -18,7 +16,8 @@ public class StringExtensions {
 		String original = readLine();
 		print("Please enter parameter 2: ");
 		char delimiter = readChar();
-		println("Output: " + Arrays.toString(split(original, delimiter)));
+		// Arrays.toString(a)
+		println("Output: " + arrayToString(split(original, delimiter)));
 		
 		// readChar() hinterlässt \n im Buffer
 		readLine();
@@ -52,53 +51,81 @@ public class StringExtensions {
 		return retval;
 	}
 	
-	
 	public static String[] split(String original, char delimiter){
-		int numberOfParts = 1;
-		for(int i = 0; i<original.length(); i++){
-			if(original.charAt(i)==delimiter){
-				numberOfParts++;
+		int parts = 1;
+		
+		for (int i = 0; i < original.length(); i++) {
+			if (original.charAt(i) == delimiter) {
+				parts++;
 			}
 		}
-		String[] splittedStringArray = new String[numberOfParts];
+		
+		String[] splitString = new String[parts];
+		// Arrays.fill(a, val)
+		for (int i = 0; i < splitString.length; i++) {
+			splitString[i] = "";
+		}
+		
 		int currentPart = 0;
-		splittedStringArray[0] = "";
-		for(int i = 0; i<original.length(); i++){
-			if(original.charAt(i)!=delimiter){
-				splittedStringArray[currentPart]+=original.charAt(i);
-			}else{
+		
+		for(int i = 0; i < original.length(); i++){
+			if (original.charAt(i) != delimiter){
+				splitString[currentPart] += original.charAt(i);
+			} else {
 				currentPart++;
-				splittedStringArray[currentPart] = "";
 			}
 		}
-		return splittedStringArray;
+		
+		return splitString;
 	}
 	
 	public static int scan(String original, String needle){
-		if(needle.length()>original.length()){
+		if (original == null) {
+			throw new GDIException("Original darf nicht null sein!");
+		}
+		if (needle == null) {
+			throw new GDIException("Needle darf nicht null sein!");
+		}
+		if (needle.length() > original.length()) {
 			throw new GDIException("Die eingegebene Zeichenkette ist länger als die zu durchsuchende Zeichenkette!");
 		}
-		if(needle.length()==0){
+		if (needle.length() == 0){
 			throw new GDIException("Der zu suchende String darf nicht leer sein!");
 		}
-		if(original.length()==0){
+		if (original.length() == 0){
 			throw new GDIException("Der zu durchsuchende String darf nicht leer sein!");
 		}
-		int needleLength = needle.length();
+		
 		boolean needleFound = false;
+		int needleLength = needle.length();
 		int needlePosition = -1;
-		for(int i = 0; i<original.length()-needle.length()+1 && !needleFound; i++){
-			String actualCheck = "";
-			for(int j = i; j<needleLength+i && !needleFound; j++){
-				actualCheck+=original.charAt(j);
+		
+		for (int i = 0; i < original.length() - needle.length() + 1 && !needleFound; i++) {
+			String currentCheck = "";
+			
+			for (int j = i; j < needleLength + i && !needleFound; j++){
+				currentCheck += original.charAt(j);
 			}
-			if(actualCheck.equals(needle)){
+			
+			if (currentCheck.equals(needle)) {
 				needleFound = true;
 				needlePosition = i;
 			}
 		}
+		
 		return needlePosition;
-		
-		
 	}
+	
+	private static String arrayToString(String[] array) {
+		String retval = "[";
+		
+		for (int i = 0; i < array.length; i++) {
+			String delimiter = (i == array.length - 1 ? "" : ", ");
+			retval += "\"" + array[i] + "\"" + delimiter;
+		}
+		
+		retval += "]";
+		return retval;
+	}
+	
 }
