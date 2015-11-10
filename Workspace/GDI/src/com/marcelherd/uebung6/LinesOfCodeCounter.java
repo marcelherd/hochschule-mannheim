@@ -7,7 +7,7 @@ public class LinesOfCodeCounter {
 
 	}
 
-	static int countLines(String filename) {
+	public static int countLines(String filename) {
 		Object file = openInputFile(filename);
 		int numberOfLines = 0;
 		while (!isEndOfInputFile(file)) {
