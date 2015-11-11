@@ -9,7 +9,7 @@ public class LinesOfCodeCounter {
 
 	public static int countLines(String filename) {
 		Object file = openInputFile(filename);
-		int numberOfLines = 0;
+		int retval = 0;
 		while (!isEndOfInputFile(file)) {
 
 			String line = readLine(file);
@@ -36,11 +36,11 @@ public class LinesOfCodeCounter {
 			}
 
 			if (!(empty || commented)) {
-				numberOfLines++;
+				retval++;
 			}
 
 		}
 		closeInputFile(file);
-		return numberOfLines;
+		return retval;
 	}
 }
