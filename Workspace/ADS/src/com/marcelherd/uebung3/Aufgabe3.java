@@ -44,15 +44,23 @@ public class Aufgabe3 {
 		small = generateRandomArray(TEST_CASE_SMALL);
 		println("Sorting array of length " + TEST_CASE_SMALL + ":");
 		insertionSortVariant(small);
+		for(int i = 0; i<small.length-1; i++){
+			if(small[i]>small[i+1]){
+				System.err.println("FEHLER BEI I: " + i);
+			}
+		}
 
 		medium = generateRandomArray(TEST_CASE_MEDIUM);
 		println("\nSorting array of length " + TEST_CASE_MEDIUM + ":");
 		insertionSortVariant(medium);
-
+		for(int i = 0; i<medium.length-1; i++){
+			if(medium[i]>medium[i+1]){
+				System.err.println("FEHLER BEI I: " + i);
+			}
+		}
 		large = generateRandomArray(TEST_CASE_LARGE);
 		println("\nSorting array of length " + TEST_CASE_LARGE + ":");
 		insertionSortVariant(large);
-		println("Run x 1000 executed! No Errors appeard!");
 	}
 
 	public static void insertionSort(int[] array) {
@@ -97,12 +105,13 @@ public class Aufgabe3 {
 									 // (else-if)
 				insertIndex = i;
 				indexFound = true;
-			}else if(array[i - 1] > toBeInserted){
-				keyComparisons++;
+			}else if(array[1] > toBeInserted){
+				keyComparisons+= 3; // 3 Comparisons were executed yet
+									// (else-if)
 				insertIndex = 1;
 				indexFound = true;
 			}else {
-				keyComparisons += 2; // 2 Comparisons were executed yet
+				keyComparisons += 3; // 3 Comparisons were executed yet
 									 // (else-if)
 			}
 			
