@@ -9,7 +9,7 @@ public class Aufgabe4 {
 		println("Shaker sort");
 		println("------------------------------------------------");
 		
-		int[] trivial = new int[] { 44, 6, 55, 30, 94, 18 }; // example from slides
+		int[] trivial = new int[] { 44, 55, 12, 42, 94, 18, 6, 67  }; // example from slides
 		shakerSort(trivial);
 	}
 	
