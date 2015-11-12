@@ -64,9 +64,10 @@ public class Aufgabe4 {
 	}
 	
 	/**
-	 * Generates a string representation of an array.
+	 * Generates a string representation of an array as per the example on Blatt 3 Aufgabe 4.
 	 * 
 	 * @param array
+	 * @param depth Iteration depth
 	 * @return String representation of array
 	 */
 	private static String arrayToString(int[] array, int depth) {
