@@ -25,12 +25,6 @@ public class MergeSort {
 		if (isFilePresent(path) && isFileReadable(path)) {
 			sort(path);
 		}
-
-		// Die erste Zahl auf der Datei gibt die Anzahl der folgenden Zahlen an.
-		// Sie können die Zahl aber auch als ganz normalen Wert interpretieren.
-		// Sollte am Ende einer Datei ein Leerzeichen stehen, dann löschen Sie
-		// das von Hand.
-
 	}
 
 	public static void sort(String path) {
@@ -41,7 +35,7 @@ public class MergeSort {
 		int aktuelle_lauflaenge = 1;
 		while (aktuelle_lauflaenge < array.length) {
 			split(array, path);
-			
+
 			// clear output file
 			Object sortedFile = openOutputFile(path);
 			println(sortedFile);
@@ -61,10 +55,10 @@ public class MergeSort {
 			aktuelle_lauflaenge *= 2;
 		}
 
-		
 	}
 
 	/**
+	 * Splits an input sequence into two halves which are saved in separate files.
 	 * 
 	 * @param array
 	 *            Integer sequence that will be split
@@ -80,21 +74,51 @@ public class MergeSort {
 		Object evenFile = openOutputFile(evenPath);
 
 		for (int i = 0; i < array.length - 1; i += 2) {
-			println(oddFile, array[i]);
-			println(evenFile, array[i + 1]);
+			print(oddFile, array[i] + " ");
+			print(evenFile, array[i + 1] + " ");
 		}
-		
+
 		// correction for a sequence with an odd amount of elements
 		if ((array.length % 2) != 0) {
-			println(oddFile, array[array.length - 1]); // simply print the last element extra
+			print(oddFile, array[array.length - 1] + " "); // simply print the last element extra
 		}
 
 		closeOutputFile(evenFile);
 		closeOutputFile(oddFile);
 	}
 
-	public static void merge() {
+	/**
+	 * Merges two sequences (from separate files) into another file while considering order.
+	 * 
+	 * @param path Path of the file that is being sorted.
+	 */
+	public static void merge(String path) {
+		String oddPath = appendToTxtFileName(SEQUENCE_ODD_APPEND, path);
+		String evenPath = appendToTxtFileName(SEQUENCE_EVEN_APPEND, path);
 
+		Object oddFile = openInputFile(oddPath);
+		Object evenFile = openInputFile(evenPath);
+		Object file = openOutputFile(path);
+
+		int[] oddArray = readSequenceFromFile(oddFile);
+		int[] evenArray = readSequenceFromFile(evenFile);
+
+		int oddAdjustment = oddArray.length > evenArray.length ? -1 : 0;
+
+		for (int i = 0; i < oddArray.length + oddAdjustment; i++) {
+			if (oddArray[i] > evenArray[i]) {
+				print(file, evenArray[i] + " ");
+				print(file, oddArray[i] + " ");
+			}
+		}
+
+		if (oddAdjustment == -1) {
+			print(file, oddArray[oddArray.length - 1] + " "); // simply print the last element extra
+		}
+
+		closeOutputFile(file);
+		closeInputFile(evenFile);
+		closeInputFile(oddFile);
 	}
 
 	/**
