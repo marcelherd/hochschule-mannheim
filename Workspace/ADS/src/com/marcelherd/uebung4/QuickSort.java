@@ -5,7 +5,6 @@ import static gdi.MakeItSimple.println;
 import java.util.Random;
 
 import com.marcelherd.uebung3.Aufgabe3;
-import com.marcelherd.uebung3.Aufgabe4;
 
 public class QuickSort {
 

@@ -23,7 +23,6 @@ public class Aufgabe4 {
 		
 		do {
 			mutation = false;
-			println(arrayToString(array, depth)); // print current state
 			
 			if (direction) { // left to right
 				for (int i = 0; i < array.length - 1; i++) {
@@ -33,7 +32,6 @@ public class Aufgabe4 {
 						array[i + 1] = array[i] ^ array[i + 1];
 						array[i] = array[i] ^ array[i + 1];
 						mutation = true; // something changed, we're not done yet
-						println(arrayToString(array, depth, i, i + 1)); // print current state highlighting permutations
 						permutations++;
 					}
 					
@@ -47,7 +45,6 @@ public class Aufgabe4 {
 						array[i] = array[i + 1] ^ array[i];
 						array[i + 1] = array[i + 1] ^ array[i];
 						mutation = true; // something changed, we're not done yet
-						println(arrayToString(array, depth, i, i + 1)); // print current state highlighting permutations
 						permutations++;
 					}
 					
@@ -58,9 +55,6 @@ public class Aufgabe4 {
 			direction = !direction; // invert direction
 			depth++;
 		} while (mutation);
-		
-		println("Number of permutations: " + permutations);
-		println("Number of key comparisons: " + keyComparisons);
 	}
 	
 	/**
@@ -96,7 +90,7 @@ public class Aufgabe4 {
 	 * @param secondIndex Index of the second number that should be highlighted
 	 * @return String representation of array
 	 */
-	private static String arrayToString(int[] array, int depth, int firstIndex, int secondIndex) {
+	public static String arrayToString(int[] array, int depth, int firstIndex, int secondIndex) {
 		String retval = "F" + depth + " =\t";
 		
 		for (int i = 0; i < array.length; i++) {
