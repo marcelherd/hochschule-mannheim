@@ -182,7 +182,7 @@ public class Aufgabe3 {
 		return array;
 	}
 
-	private static String arrayToString(int[] array) {
+	public static String arrayToString(int[] array) {
 		String retval = "[";
 
 		for (int i = 0; i < array.length; i++) {
