@@ -2,7 +2,7 @@ package com.marcelherd.uebung4;
 
 import static gdi.MakeItSimple.*;
 
-import java.util.Arrays;
+import com.marcelherd.uebung3.Aufgabe4;
 
 /**
  * Diese Klasse sortiert eine Folge mittels direktem Mergesort.
@@ -12,7 +12,7 @@ import java.util.Arrays;
  * @author Manuel Schwalm
  */
 public class MergeSort {
-
+	
 	private static final int FILE_TYPE_LENGTH = 4; // ".txt".length()
 
 	private static final String SEQUENCE_ODD_APPEND = "_f1";
@@ -29,96 +29,84 @@ public class MergeSort {
 
 	public static void sort(String path) {
 		Object file = openInputFile(path);
-		int[] array = readSequenceFromFile(file);
+		int[] array = readOriginSequenceFromFile(file);
 		closeInputFile(file);
-
-		int aktuelle_lauflaenge = 1;
-		while (aktuelle_lauflaenge < array.length) {
-			split(array, path);
-
-			// clear output file
-			Object sortedFile = openOutputFile(path);
-			println(sortedFile);
-			closeOutputFile(sortedFile);
-
-			// for (;;) { // for 1. Lauf to letzter Lauf do
-			// while (true) { // Lauf der Länge tl in F1 oder F2 noch nicht
-			// abgearbeitet
-			// Entferne das kleinere Anfangselement aus F1 bzw F2
-			// Füge dieses an F an
-			// }
-
-			// Füge den verbliebenen nichtleeren Rest des aktuellen Laufs von F1
-			// oder F2 an F an
-			// }
-
-			aktuelle_lauflaenge *= 2;
+		
+		int bubbleSize = 1;
+		
+		while (bubbleSize < array.length) {
+			split(array, bubbleSize, path);
+			merge(array, bubbleSize, path);
+			printruns();
+			bubbleSize *= 2;
 		}
-
 	}
 
-	/**
-	 * Splits an input sequence into two halves which are saved in separate files.
-	 * 
-	 * @param array
-	 *            Integer sequence that will be split
-	 * @param path
-	 *            Path of the file that is being sorted. File names for odd and even sequence will
-	 *            be generated based upon this.
-	 */
-	public static void split(int[] array, String path) {
+	public static void split(int[] array, int bubbleSize, String path) {
 		String oddPath = appendToTxtFileName(SEQUENCE_ODD_APPEND, path);
 		String evenPath = appendToTxtFileName(SEQUENCE_EVEN_APPEND, path);
 
 		Object oddFile = openOutputFile(oddPath);
 		Object evenFile = openOutputFile(evenPath);
-
-		for (int i = 0; i < array.length - 1; i += 2) {
-			print(oddFile, array[i] + " ");
-			print(evenFile, array[i + 1] + " ");
+		
+		boolean printToOdd = true;
+		for (int i = 0, j = 0; i < array.length; i++, j++) {
+			if (j == bubbleSize) {
+				printToOdd = !printToOdd;
+				j = 0;
+			}
+			
+			if (printToOdd) {
+				print(oddFile, array[i] + " ");
+			} else {
+				print(evenFile, array[i] + " ");
+			}
 		}
-
-		// correction for a sequence with an odd amount of elements
-		if ((array.length % 2) != 0) {
-			print(oddFile, array[array.length - 1] + " "); // simply print the last element extra
-		}
-
+		
 		closeOutputFile(evenFile);
 		closeOutputFile(oddFile);
 	}
 
-	/**
-	 * Merges two sequences (from separate files) into another file while considering order.
-	 * 
-	 * @param path Path of the file that is being sorted.
-	 */
-	public static void merge(String path) {
+	public static void merge(int[] array, int bubbleSize, String path) {
 		String oddPath = appendToTxtFileName(SEQUENCE_ODD_APPEND, path);
 		String evenPath = appendToTxtFileName(SEQUENCE_EVEN_APPEND, path);
 
 		Object oddFile = openInputFile(oddPath);
 		Object evenFile = openInputFile(evenPath);
-		Object file = openOutputFile(path);
-
+		Object originFile = openOutputFile(path);
+		
 		int[] oddArray = readSequenceFromFile(oddFile);
 		int[] evenArray = readSequenceFromFile(evenFile);
-
-		int oddAdjustment = oddArray.length > evenArray.length ? -1 : 0;
-
-		for (int i = 0; i < oddArray.length + oddAdjustment; i++) {
-			if (oddArray[i] > evenArray[i]) {
-				print(file, evenArray[i] + " ");
-				print(file, oddArray[i] + " ");
+		
+		int[] sortedArray = new int[bubbleSize * 2];
+		for (int i = 0; i < bubbleSize * 2; i++) {
+			if (i < bubbleSize) {
+				sortedArray[i] = oddArray[i];
+			} else {
+				sortedArray[i] = evenArray[i + bubbleSize];
 			}
 		}
+		Aufgabe4.shakerSort(sortedArray);
+		
+//		while (oddArray.length > 0 || evenArray.length > 0) {
+//			if (oddArray.length == 0 && evenArray.length > 0) {
+//				print(originFile, evenArray[0] + " ");
+//				evenArray = removeFromArray(evenArray, 0);
+//			} else if (evenArray.length == 0 && oddArray.length > 0) {
+//				print(originFile, oddArray[0] + " ");
+//				oddArray = removeFromArray(oddArray, 0);
+//			} else if (oddArray[0] < evenArray[0]) {
+//				print(originFile, oddArray[0] + " ");
+//				oddArray = removeFromArray(oddArray, 0);
+//			} else {
+//				print(originFile, evenArray[0] + " ");
+//				evenArray = removeFromArray(evenArray, 0);
+//			}
+//		}
 
-		if (oddAdjustment == -1) {
-			print(file, oddArray[oddArray.length - 1] + " "); // simply print the last element extra
-		}
-
-		closeOutputFile(file);
-		closeInputFile(evenFile);
+		closeOutputFile(originFile);
 		closeInputFile(oddFile);
+		closeInputFile(evenFile);
 	}
 
 	/**
@@ -126,9 +114,32 @@ public class MergeSort {
 	 * einzelne Arbeitsschritte zu protokollieren.
 	 */
 	public static void printruns() {
-
+		
 	}
+	
+	/**
+	 * Constructs an integer sequence from file contents
+	 * First element is used as length indicator only and therefore skipped
+	 * 
+	 * @param file File which contains the sequence
+	 * @return int[] Integer sequence
+	 */
+	public static int[] readOriginSequenceFromFile(Object file) {
+		// Read file contents
+		String content = "";
+		while (!isEndOfInputFile(file)) {
+			content += readLine(file);
+		}
 
+		// Construct integer sequence from contents
+		String[] retvalString = content.split(" "); // previously implemented in GDI exercise 6
+		int[] retval = new int[retvalString.length - 1];
+		for (int i = 1; i < retvalString.length; i++) { // first element is to be skipped
+			retval[i - 1] = Integer.parseInt(retvalString[i]); // previously implemented in GDI exercise 4
+		}
+		return retval;
+	}
+	
 	/**
 	 * Constructs an integer sequence from file contents
 	 * 
@@ -144,13 +155,13 @@ public class MergeSort {
 
 		// Construct integer sequence from contents
 		String[] retvalString = content.split(" "); // previously implemented in GDI exercise 6
-		int[] retval = new int[retvalString.length - 1];
-		for (int i = 1; i < retvalString.length; i++) { // first element is to be skipped
-			retval[i - 1] = Integer.parseInt(retvalString[i]); // previously implemented in GDI exercise 4
+		int[] retval = new int[retvalString.length];
+		for (int i = 0; i < retvalString.length; i++) { // first element is to be skipped
+			retval[i] = Integer.parseInt(retvalString[i]); // previously implemented in GDI exercise 4
 		}
 		return retval;
 	}
-
+	
 	/**
 	 * Appends a String to a file name while retaining the file extension .txt 
 	 * String.replace(".txt", append + ".txt") is not an option..
@@ -169,6 +180,27 @@ public class MergeSort {
 		}
 
 		return retval + append + ".txt";
+	}
+	
+	/**
+	 * Removes an element from an array and returns a copy of it with length - 1
+	 * 
+	 * @param array array to be modified
+	 * @param index to be removed from array
+	 * @return Copy of array without value at specified index
+	 */
+	public static int[] removeFromArray(int[] array, int index) {
+		int[] retval = new int[array.length - 1];
+		int skipped = 0;
+		for (int i = 0; i < array.length; i++) {
+			if (i != index) {
+				retval[i - skipped] = array[i];
+			} else {
+				skipped++;
+			}
+		}
+		
+		return retval;
 	}
 
 }
