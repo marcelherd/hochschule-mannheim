@@ -110,8 +110,37 @@ public class MergeSort {
 	}
 
 	/**
-	 * Constructs an integer sequence from file contents First element is used
-	 * as length indicator only and therefore skipped
+	 * Prints the current run formatted as in ADS Ch. 5 slide 42
+	 * 
+	 * @param bubbleSize Current bubble size
+	 * @param path Path to the file being sorted
+	 */
+	public static void printruns(int bubbleSize, String path) {
+		Object file = openInputFile(path);
+		
+		int[] array = readSequenceFromFile(file);
+		
+		for (int i = 0, j = 0; i < array.length; i++, j++) {
+			if ((j % bubbleSize) == 0) {
+				print("(");
+			}
+			
+			String delimiter = ((j % bubbleSize) < bubbleSize - 1) ? "," : "";
+			print(array[i] + delimiter);
+			
+			if ((j % bubbleSize) == bubbleSize - 1) {
+				print(")");
+			}
+		}
+		
+		print("\n");
+		
+		closeInputFile(file);
+	}
+	
+	/**
+	 * Constructs an integer sequence from file contents
+	 * First element is used as length indicator only and therefore skipped
 	 * 
 	 * @param file
 	 *            File which contains the sequence
@@ -208,35 +237,5 @@ public class MergeSort {
 		return retval;
 	}
 
-	/**
-	 * Prints the current run formatted as in ADS Ch. 5 slide 42
-	 * 
-	 * @param bubbleSize
-	 *            Current bubble size
-	 * @param path
-	 *            Path to the file being sorted
-	 */
-	public static void printruns(int bubbleSize, String path) {
-		Object file = openInputFile(path);
-
-		int[] array = readSequenceFromFile(file);
-
-		for (int i = 0, j = 0; i < array.length; i++, j++) {
-			if ((j % bubbleSize) == 0) {
-				print("(");
-			}
-
-			String delimiter = ((j % bubbleSize) < bubbleSize - 1) ? "," : "";
-			print(array[i] + delimiter);
-
-			if ((j % bubbleSize) == bubbleSize - 1) {
-				print(")");
-			}
-		}
-
-		print("\n");
-
-		closeInputFile(file);
-	}
 
 }
