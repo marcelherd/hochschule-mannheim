@@ -9,57 +9,47 @@ import static gdi.MakeItSimple.*;
 public class ShellSort {
 	public static void main(String[] args) {
 		int[] protocoll = new int[] { 0, 0 };
-		int[] F;
 
+// values for h-sorting 9, 4, 3, 1
+//		Testfelder fur Shell Sort
+
+		int [] F;
+		
 		// values for h-sorting 9, 4, 3, 1
+		
+//		F = new int[] {10, 4, 33, 44, 17, 20, 3, 2, 9, 82, 38, 67, 55, 11, 32, 23, 19, 7, 6, 14, 29}; // "zufÃ¤lliges" Feld
+//		# Vergleiche: 99  # Vertauschungen: 39
+		
+//		F = new int [] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10};  // F ist schon sortiert
+//		# Vergleiche: 23  # Vertauschungen: 0	
+		
+		
+//		F = new int [] {10, 9, 8, 7, 6, 5, 4, 3, 2, 1};  // F ist umgekehrt sortiert
+//		# Vergleiche: 27  # Vertauschungen: 9
 
-		F = new int[] { 10, 4, 33, 44, 17, 20, 3, 2, 9, 82, 38, 67, 55, 11, 32, 23, 19, 7, 6, 14, 29 }; // "zufÃ¤lliges"
-																										// Feld
-		// # Vergleiche: 99 # Vertauschungen: 39
 
-		F = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 }; // F ist schon sortiert
-		// # Vergleiche: 23 # Vertauschungen: 0
+//		F = new int [] {10, 1, 9, 2, 8, 3, 7, 4, 6, 5};  // F ist alternierend, umgekehrt sortiert
+//		# Vergleiche: 29  # Vertauschungen: 11
 
-		F = new int[] { 10, 9, 8, 7, 6, 5, 4, 3, 2, 1 }; // F ist umgekehrt
-															// sortiert
-		// # Vergleiche: 27 # Vertauschungen: 9
+//		F = new int [] {2, 3, 4, 5, 6, 7, 8, 9, 10, 1};  // F ist fast sortiert - das kleinste Element steht ganz rechts
+//		# Vergleiche: 29  # Vertauschungen: 9
 
-		F = new int[] { 10, 1, 9, 2, 8, 3, 7, 4, 6, 5 }; // F ist alternierend,
-															// umgekehrt
-															// sortiert
-		// # Vergleiche: 29 # Vertauschungen: 11
+//		F = new int [] {6, 7, 8, 9, 10, 1, 2, 3, 4, 5};  // F besteht aus 2 sortierten Teilfolgen
+//		# Vergleiche: 29  # Vertauschungen: 13
 
-//		F = new int[] { 2, 3, 4, 5, 6, 7, 8, 9, 10, 1 }; // F ist fast sortiert
-															// - das kleinste
-															// Element steht
-															// ganz rechts
-		// # Vergleiche: 29 # Vertauschungen: 9
 
-//		F = new int[] { 6, 7, 8, 9, 10, 1, 2, 3, 4, 5 }; // F besteht aus 2
-															// sortierten
-															// Teilfolgen
-		// # Vergleiche: 29 # Vertauschungen: 13
+//		F = new int [] {10, 2, 3, 4, 5, 6, 7, 8, 9, 1};  // F ist fast sortiert - nur min und max haben ihre Position vertauscht
+//		# Vergleiche: 23  # Vertauschungen: 1
+		
 
-//		F = new int[] { 10, 2, 3, 4, 5, 6, 7, 8, 9, 1 }; // F ist fast sortiert
-															// - nur min und max
-															// haben ihre
-															// Position
-															// vertauscht
-		// # Vergleiche: 23 # Vertauschungen: 1
+//		F = new int[] {1};
+//		# Vergleiche: 0  # Vertauschungen: 0		
 
-//		F = new int[] { 1 };
-		// # Vergleiche: 0 # Vertauschungen: 0
+		F = new int [] {10, 1, 2, 3, 4, 5, 6, 7, 8, 9};  // F ist fast sortiert - das grÃ¶ÃŸte Element steht ganz links
+//		# Vergleiche: 28  # Vertauschungen: 9	
 
-//		F = new int[] { 10, 1, 2, 3, 4, 5, 6, 7, 8, 9 }; // F ist fast sortiert
-															// - das grÃ¶ÃŸte
-															// Element steht
-															// ganz links
-		// # Vergleiche: 28 # Vertauschungen: 9
-
-//		 F = new int[] { 5, 5, 5, 5, 5, 5, 5, 5, 5, 5 }; // F ist sortiert -
-		// alle
-		// Elemente sind gleich
-		// # Vergleiche: 23 # Vertauschungen: 0
+//		F = new int [] {5, 5, 5, 5, 5, 5, 5, 5, 5, 5};  // F ist sortiert - alle Elemente sind gleich
+//		# Vergleiche: 23  # Vertauschungen: 0	
 		shellSort(F, protocoll);
 		println(Aufgabe3.arrayToString(F));
 
@@ -67,6 +57,14 @@ public class ShellSort {
 		println("Number of key comparisons: " + protocoll[0]);
 	}
 
+	/**
+	 * This procedure sorts an array.
+	 * 
+	 * @param array
+	 *            The array which have to be sorted
+	 * @param protocoll
+	 *            Holder for protocoll data
+	 */
 	public static void shellSort(int[] array, int[] protocoll) {
 		if (array.length > 4) {
 			if (array.length > 7) {
@@ -83,6 +81,15 @@ public class ShellSort {
 		insertionSort(array, protocoll);
 	}
 
+	/**
+	 * 
+	 * @param array
+	 *            The array which have to be sorted
+	 * @param h
+	 *            Amount of arrays after a {@see slice}
+	 * @param protocoll
+	 *            Holder for protocoll data
+	 */
 	public static void sort(int[] array, int h, int[] protocoll) {
 		if (h == 1) {
 			return;
@@ -92,6 +99,7 @@ public class ShellSort {
 			insertionSort(sliced[i], protocoll);
 		}
 		array = merge(sliced);
+		println(Aufgabe3.arrayToString(array));
 		if (h == 9) {
 			sort(array, h - 2, protocoll);
 		} else {
@@ -99,72 +107,99 @@ public class ShellSort {
 		}
 	}
 
+	/**
+	 * 
+	 * @param array
+	 *            The array which have to be sorted
+	 * @param h
+	 *            Amount of arrays after slice
+	 * @return The sliced array
+	 */
 	public static int[][] slice(int[] array, int h) {
 		int[][] sliced = new int[h][];
-		int stopValue = (array.length-1)%h+1;
-		int maxRows = array.length/h;
-		if(array.length%h!=0){
+		int stopValue = (array.length - 1) % h + 1;
+		int maxRows = array.length / h;
+		if (array.length % h != 0) {
 			maxRows++;
 		}
-		for(int i = 0; i<sliced.length; i++){
-			if(i<stopValue){
+
+		/* Creates the arrays in arrays in different lengths. So until
+		 * sliced[stopvalue] every array has the length maxRows (
+		 * sliced[0][maxRows] - sliced[stopvalue][maxRows] ), after that they
+		 * have maxRows - 1.
+		 */
+		for (int i = 0; i < sliced.length; i++) {
+			if (i < stopValue) {
 				sliced[i] = new int[maxRows];
-			}else{
-				sliced[i] = new int[maxRows-1];
+			} else {
+				sliced[i] = new int[maxRows - 1];
 			}
 		}
-			int usedValues = 0;
-			int currentRow = 0;
-			int i = 0;
-			while(usedValues<array.length){
-				sliced[i][currentRow] = array[usedValues];
-				usedValues++;
-				i++;
-				if(i>=sliced.length){
-					currentRow++;
-					i=0;
-				}
+
+		// This writes the numbers from to lowest index of each array. So first
+		// index 0, then index 1 ...
+		int usedValues = 0;
+		int currentRow = 0;
+		int i = 0;
+		while (usedValues < array.length) {
+			sliced[i][currentRow] = array[usedValues];
+			usedValues++;
+			i++;
+			if (i >= sliced.length) {
+				currentRow++;
+				i = 0;
 			}
-		
+		}
+
 		return sliced;
 	}
 
+	/**
+	 * Merges all the arrays which are in the 2-dimensional array to one single
+	 * array.
+	 * 
+	 * @param array
+	 *            The arrays which have to be merged
+	 * @return The merged array
+	 */
 	public static int[] merge(int[][] array) {
 		int validValues = 0;
-		for(int i = 0; i<array.length; i++){
-			for(int j = 0; j<array[i].length; j++){
+		for (int i = 0; i < array.length; i++) {
+			for (int j = 0; j < array[i].length; j++) {
 				validValues++;
 			}
 		}
 		int[] merged = new int[validValues];
 		int mergedIndex = 0;
-//		for (int i = 0; i < array.length; i++) {
-//			for (int j = 0; j < array[i].length; j++) {
-//			
-//					merged[mergedIndex] = array[i][j];
-//					mergedIndex++;
-//			}
-//		}
-		
+
+		// This writes the numbers from the lowest index of each array. So first
+		// index 0, then index 1 ...
 		int usedValues = 0;
 		int currentRow = 0;
 		int i = 0;
-		while(usedValues<merged.length){
+		while (usedValues < merged.length) {
 			merged[mergedIndex] = array[i][currentRow];
 			usedValues++;
 			i++;
 			mergedIndex++;
-			if(i>=array.length){
+			if (i >= array.length) {
 				currentRow++;
-				i=0;
+				i = 0;
 			}
 		}
 
-		
 		return merged;
 
 	}
 
+	/**
+	 * Sorts the current array with insertion sort algorithm
+	 * 
+	 * @param array
+	 *            The arrays which have to be sorted
+	 * @param protocoll
+	 *            Holder for protocoll data
+	 */
 	public static void insertionSort(int[] array, int[] protocoll) {
 
 		Aufgabe3.arrayToString(array);
@@ -174,7 +209,7 @@ public class ShellSort {
 											// inserted
 			int originJ = j;
 			while (j > 0 && array[j - 1] > toBeInserted) { // key
-																								// comparison
+															// comparison
 				protocoll[0]++;
 				array[j] = array[j - 1]; // shifting elements 'to the right' ->
 											// permutation
@@ -182,8 +217,9 @@ public class ShellSort {
 				j -= 1;
 			}
 
-				protocoll[0]++; // Don't forget the break condition comparison
+			protocoll[0]++; // Don't forget the break condition comparison
 
+			// Avoids swaps of same numbers.
 			if (j != originJ) {
 				array[j] = toBeInserted; // permutation
 				protocoll[1]++;
