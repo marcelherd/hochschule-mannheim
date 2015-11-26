@@ -37,7 +37,7 @@ public class MergeSort {
 		while (bubbleSize < array.length) {
 			split(array, bubbleSize, path);
 			merge(array, bubbleSize, path);
-			printruns();
+			printruns(bubbleSize, path);
 			bubbleSize *= 2;
 		}
 	}
@@ -110,11 +110,32 @@ public class MergeSort {
 	}
 
 	/**
-	 * welche ein Band (d.h eine Datei) in geeigneter Form (mit Kennzeichnung der runs) ausgibt, um
-	 * einzelne Arbeitsschritte zu protokollieren.
+	 * Prints the current run formatted as in ADS Ch. 5 slide 42
+	 * 
+	 * @param bubbleSize Current bubble size
+	 * @param path Path to the file being sorted
 	 */
-	public static void printruns() {
+	public static void printruns(int bubbleSize, String path) {
+		Object file = openInputFile(path);
 		
+		int[] array = readSequenceFromFile(file);
+		
+		for (int i = 0, j = 0; i < array.length; i++, j++) {
+			if ((j % bubbleSize) == 0) {
+				print("(");
+			}
+			
+			String delimiter = ((j % bubbleSize) < bubbleSize - 1) ? "," : "";
+			print(array[i] + delimiter);
+			
+			if ((j % bubbleSize) == bubbleSize - 1) {
+				print(")");
+			}
+		}
+		
+		print("\n");
+		
+		closeInputFile(file);
 	}
 	
 	/**
