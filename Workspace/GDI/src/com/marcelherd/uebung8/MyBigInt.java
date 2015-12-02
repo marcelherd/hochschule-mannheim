@@ -1,9 +1,11 @@
-package com.marcelherd.uebung8;
+package uebung08;
 
 import gdi.MISException;
+
 /**
- * This class represents numbers which are greater than zero. Every single
-	 * digit is stored in an Array of Integers named digits.
+ * This class represents numbers which are greater than zero. Every single digit
+ * is stored in an Array of Integers named digits.
+ * 
  * @author Marcel Herd
  * @author Manuel Schwalm
  * @author Firas Romdhane
@@ -22,25 +24,27 @@ public class MyBigInt implements BigInt, Comparable<BigInt> {
 	 *             is thrown if an invalid character is found.
 	 */
 	public MyBigInt(String bigInteger) throws MISException {
-
-		int startOfValidValues = bigInteger.length() - 1;
-		boolean valid = false;
-		for (int i = 0; i < bigInteger.length() && !valid; i++) {
-			if (bigInteger.charAt(i) - '0' != 0) {
-				valid = true;
-				startOfValidValues = i;
+		if (bigInteger.length() > 0) {
+			int startOfValidValues = bigInteger.length() - 1;
+			boolean valid = false;
+			for (int i = 0; i < bigInteger.length() && !valid; i++) {
+				if (bigInteger.charAt(i) - '0' != 0) {
+					valid = true;
+					startOfValidValues = i;
+				}
 			}
-		}
-		digits = new int[bigInteger.length() - startOfValidValues];
-		for (int i = startOfValidValues; i < bigInteger.length(); i++) {
-			int digit = (int) (bigInteger.charAt(i) - '0');
-			if (digit < 0 || digit > 9) {
-				throw new MISException("Error at parsing String to MyBigInt: The character at " + (i + 1) + " (\'"
-						+ bigInteger.charAt(i) + "\')" + " is not a valid digit!");
+			digits = new int[bigInteger.length() - startOfValidValues];
+			for (int i = startOfValidValues; i < bigInteger.length(); i++) {
+				int digit = (int) (bigInteger.charAt(i) - '0');
+				if (digit < 0 || digit > 9) {
+					throw new MISException("Error at parsing String to MyBigInt: The character at " + (i + 1) + " (\'"
+							+ bigInteger.charAt(i) + "\')" + " is not a valid digit!");
+				}
+				digits[i - startOfValidValues] = digit;
 			}
-			digits[i - startOfValidValues] = digit;
+		} else {
+			throw new MISException("MyBigInt must contain at least one digit!");
 		}
-
 	}
 
 	/**
