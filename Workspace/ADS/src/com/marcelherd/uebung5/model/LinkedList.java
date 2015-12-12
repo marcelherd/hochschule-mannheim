@@ -1,5 +1,7 @@
 package com.marcelherd.uebung5.model;
 
+import java.util.NoSuchElementException;
+
 /**
  * Custom linked list implementation, may only contain integers.
  * This interface adheres to the standards set by the official JDK LinkedList interface, wherever it is applicable.
@@ -28,29 +30,33 @@ public interface LinkedList {
 	 * Removes and returns the first integer from this list.
 	 * 
 	 * @return the first integer from this list
+	 * @throws NoSuchElementException - if the list is empty
 	 */
-	int removeFirst();	
+	int removeFirst() throws NoSuchElementException;	
 	
 	/**
 	 * Removes and returns the last integer from this list.
 	 * 
 	 * @return the last integer from this list
+	 * @throws NoSuchElementException - if the list is empty
 	 */
-	int removeLast();
+	int removeLast() throws NoSuchElementException;
 	
 	/**
 	 * Returns the first integer in this list.
 	 * 
 	 * @return the first integer in this list
+	 * @throws NoSuchElementException - if the list is empty
 	 */
-	int getFirst();
+	int getFirst() throws NoSuchElementException;
 	
 	/**
 	 * Returns the last integer in this list.
 	 * 
 	 * @return the last integer in this list
+	 * @throws NoSuchElementException - if the list is empty
 	 */
-	int getLast();
+	int getLast() throws NoSuchElementException;
 	
 	/**
 	 * Returns true if this collection contains no integers.
@@ -74,6 +80,20 @@ public interface LinkedList {
 	 * @return empty LinkedList
 	 */
 	LinkedList clear();
+	
+	/**
+	 * Returns the number of elements in this list.
+	 * 
+	 * @return the number of elements in this list
+	 */
+	int size();
+	
+	/**
+	 * Returns a shallow copy of this LinkedList. (The elements themselves are not cloned.)
+	 * 
+	 * @return a shallow copy of this LinkedList instance
+	 */
+	LinkedList clone();
 	
 	/**
 	 * Deletes the integer at the specified position in this list. 
