@@ -54,7 +54,7 @@ public class MyLinkedList implements LinkedList {
 	}
 
 	@Override
-	public int removeFirst() {
+	public int removeFirst() throws NoSuchElementException {
 		if (isEmpty()) {
 			throw new NoSuchElementException("Error: List is empty");
 		} else {
@@ -65,7 +65,7 @@ public class MyLinkedList implements LinkedList {
 	}
 
 	@Override
-	public int removeLast() {
+	public int removeLast() throws NoSuchElementException {
 		if (isEmpty()) { // size == 0
 			throw new NoSuchElementException("Error: List is empty");
 		} else {
@@ -88,7 +88,7 @@ public class MyLinkedList implements LinkedList {
 	}
 
 	@Override
-	public int getFirst() {
+	public int getFirst() throws NoSuchElementException {
 		if (isEmpty()) {
 			throw new NoSuchElementException("Error: List is empty");
 		} else {
@@ -97,7 +97,7 @@ public class MyLinkedList implements LinkedList {
 	}
 
 	@Override
-	public int getLast() {
+	public int getLast() throws NoSuchElementException {
 		if (isEmpty()) {
 			throw new NoSuchElementException("Error: List is empty");
 		} else {
@@ -162,7 +162,7 @@ public class MyLinkedList implements LinkedList {
 	}
 
 	@Override
-	public int delete(int index) {
+	public int delete(int index) throws IndexOutOfBoundsException {
 		if (index >= size()) {
 			throw new IndexOutOfBoundsException("Error: Invalid index");
 		} else {
@@ -204,13 +204,13 @@ public class MyLinkedList implements LinkedList {
 	}
 
 	@Override
-	public boolean add(int index, int element) {
+	public boolean add(int index, int element) throws IndexOutOfBoundsException {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public int get(int index) {
+	public int get(int index) throws IndexOutOfBoundsException {
 		if (index >= size()) {
 			throw new IndexOutOfBoundsException("Error: Invalid index");
 		} else {
