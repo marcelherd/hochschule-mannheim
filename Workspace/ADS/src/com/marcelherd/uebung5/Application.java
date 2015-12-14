@@ -4,6 +4,8 @@ import static gdi.MakeItSimple.*;
 
 import com.marcelherd.uebung5.model.LinkedList;
 import com.marcelherd.uebung5.model.MyLinkedList;
+import com.marcelherd.uebung5.model.MyQueue;
+import com.marcelherd.uebung5.model.Queue;
 
 public class Application {
 

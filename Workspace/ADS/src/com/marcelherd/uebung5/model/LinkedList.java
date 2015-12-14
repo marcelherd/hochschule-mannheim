@@ -3,7 +3,7 @@ package com.marcelherd.uebung5.model;
 import java.util.NoSuchElementException;
 
 /**
- * Custom linked list implementation, may only contain integers.
+ * Custom singly linked list implementation, may only contain integers.
  * This interface adheres to the standards set by the official JDK LinkedList interface, wherever it is applicable.
  * 
  * @author Marcel Herd
