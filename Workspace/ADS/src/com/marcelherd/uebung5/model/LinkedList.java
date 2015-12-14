@@ -158,7 +158,8 @@ public interface LinkedList {
 	 * TODO was zur Hölle ist der Unterschied zwischen addAll und concat??? Potentiell return type ändern
 	 * 
 	 * @param otherList
+	 * @return 
 	 */
-	void concat(LinkedList otherList);
+	LinkedList concat(LinkedList otherList);
 
 }

@@ -242,20 +242,32 @@ public class MyLinkedList implements LinkedList {
 
 	@Override
 	public LinkedList cloneDeep() {
-		// TODO Auto-generated method stub
-		return null;
+		LinkedList retval = new MyLinkedList(head.getValue());
+		ListNode currentNode = head.getNext();
+		while(currentNode != null){
+			retval.addLast(currentNode.getValue());
+			currentNode = currentNode.getNext();
+		}
+		return retval;
 	}
 
 	@Override
 	public boolean addAll(LinkedList otherList) {
-		// TODO Auto-generated method stub
-		return false;
+		if(otherList.isEmpty() || otherList == null){
+			return false;
+		}
+		
+		for(int i = 0; i<otherList.size(); i++){
+			addLast(otherList.get(i));
+		}
+		return true;
 	}
 
 	@Override
-	public void concat(LinkedList otherList) {
-		// TODO Auto-generated method stub
-		
+	public LinkedList concat(LinkedList otherList) {
+		LinkedList retval = cloneDeep();
+		retval.addAll(otherList);
+		return retval;
 	}
 
 }
