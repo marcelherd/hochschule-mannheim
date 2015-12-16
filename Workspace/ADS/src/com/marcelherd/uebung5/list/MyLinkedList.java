@@ -1,4 +1,4 @@
-package com.marcelherd.uebung5.model;
+package com.marcelherd.uebung5.list;
 
 import java.util.NoSuchElementException;
 
@@ -136,8 +136,8 @@ public class MyLinkedList implements LinkedList {
 
 	@Override
 	public LinkedList clear() {
-		head = null;
-		return this; // possible memory leak?
+		head = null; // will cause memory leak if Iterators are added
+		return this; 
 	}
 	
 	@Override
@@ -157,8 +157,9 @@ public class MyLinkedList implements LinkedList {
 	
 	@Override
 	public LinkedList clone() {
-		// TODO Auto-generated method stub
-		return null;
+		MyLinkedList retval = new MyLinkedList();
+		retval.setHead(head);
+		return retval;
 	}
 
 	@Override
@@ -204,9 +205,21 @@ public class MyLinkedList implements LinkedList {
 	}
 
 	@Override
-	public boolean add(int index, int element) throws IndexOutOfBoundsException {
-		// TODO Auto-generated method stub
-		return false;
+	public void add(int index, int element) throws IndexOutOfBoundsException {
+		if (index >= size()) {
+			throw new IndexOutOfBoundsException("Error: Invalid index");
+		} else {
+			ListNode currentNode = head;
+			for (int i = 0; i < index - 1; i++) {
+				currentNode = currentNode.getNext();
+			}
+			
+			ListNode toInsert = new ListNode();
+			toInsert.setValue(element);
+			// reroute the nodes
+			toInsert.setNext(currentNode.getNext());
+			currentNode.setNext(toInsert);
+		}
 	}
 
 	@Override
@@ -244,7 +257,7 @@ public class MyLinkedList implements LinkedList {
 	public LinkedList cloneDeep() {
 		LinkedList retval = new MyLinkedList(head.getValue());
 		ListNode currentNode = head.getNext();
-		while(currentNode != null){
+		while (currentNode != null){
 			retval.addLast(currentNode.getValue());
 			currentNode = currentNode.getNext();
 		}
@@ -253,11 +266,10 @@ public class MyLinkedList implements LinkedList {
 
 	@Override
 	public boolean addAll(LinkedList otherList) {
-		if(otherList.isEmpty() || otherList == null){
+		if (otherList.isEmpty() || otherList == null){
 			return false;
 		}
-		
-		for(int i = 0; i<otherList.size(); i++){
+		for (int i = 0; i < otherList.size(); i++){
 			addLast(otherList.get(i));
 		}
 		return true;
@@ -268,6 +280,14 @@ public class MyLinkedList implements LinkedList {
 		LinkedList retval = cloneDeep();
 		retval.addAll(otherList);
 		return retval;
+	}
+	
+	protected ListNode getHead() {
+		return head;
+	}
+	
+	protected void setHead(ListNode head) {
+		this.head = head;
 	}
 
 }

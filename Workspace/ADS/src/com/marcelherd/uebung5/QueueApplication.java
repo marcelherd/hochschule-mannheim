@@ -2,8 +2,8 @@ package com.marcelherd.uebung5;
 
 import static gdi.MakeItSimple.*;
 
-import com.marcelherd.uebung5.model.MyQueue;
-import com.marcelherd.uebung5.model.Queue;
+import com.marcelherd.uebung5.queue.MyQueue;
+import com.marcelherd.uebung5.queue.Queue;
 
 public class QueueApplication {
 	

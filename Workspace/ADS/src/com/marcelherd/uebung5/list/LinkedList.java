@@ -1,4 +1,4 @@
-package com.marcelherd.uebung5.model;
+package com.marcelherd.uebung5.list;
 
 import java.util.NoSuchElementException;
 
@@ -118,10 +118,9 @@ public interface LinkedList {
 	 * 
 	 * @param index - index at which the integer is to be inserted
 	 * @param element - integer that is to be inserted
-	 * @return true if this collection changed as a result of the call
 	 * @throws IndexOutOfBoundsException - if the index is out of range (index < 0 || index >= size())
 	 */
-	boolean add(int index, int element) throws IndexOutOfBoundsException;
+	void add(int index, int element) throws IndexOutOfBoundsException;
 	
 	/**
 	 * Returns the integer at the specified position in this list.
@@ -155,10 +154,10 @@ public interface LinkedList {
 	boolean addAll(LinkedList otherList);
 	
 	/**
-	 * TODO was zur Hölle ist der Unterschied zwischen addAll und concat??? Potentiell return type ändern
+	 * Creates a new LinkedList that is the concatenation of this list and otherList
 	 * 
-	 * @param otherList
-	 * @return 
+	 * @param otherList - another LinkedList that should be concatenated with this list
+	 * @return a new LinkedList that is the concatenation of this list and otherList
 	 */
 	LinkedList concat(LinkedList otherList);
 

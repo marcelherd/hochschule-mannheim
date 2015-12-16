@@ -1,6 +1,9 @@
-package com.marcelherd.uebung5.model;
+package com.marcelherd.uebung5.queue;
 
 import java.util.NoSuchElementException;
+
+import com.marcelherd.uebung5.list.LinkedList;
+import com.marcelherd.uebung5.list.MyLinkedList;
 
 public class MyQueue implements Queue {
 	

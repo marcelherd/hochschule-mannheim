@@ -4,8 +4,8 @@ import static gdi.MakeItSimple.*;
 
 import java.util.Arrays;
 
-import com.marcelherd.uebung5.model.LinkedList;
-import com.marcelherd.uebung5.model.MyLinkedList;
+import com.marcelherd.uebung5.list.LinkedList;
+import com.marcelherd.uebung5.list.MyLinkedList;
 
 public class LinkedListApplication {
 
@@ -125,7 +125,7 @@ public class LinkedListApplication {
 				index = readInt();
 				print("Enter parameter (int element): ");
 				int element = readInt();
-				println("Output: " + active.add(index, element));
+				active.add(index, element);
 				break;
 			case 15: // get(int index)
 				print("Enter parameter (int index): ");

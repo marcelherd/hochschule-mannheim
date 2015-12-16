@@ -1,4 +1,4 @@
-package com.marcelherd.uebung5.model;
+package com.marcelherd.uebung5.list;
 
 /**
  * The class ListNode is a helper class for every kind of LinkedLists

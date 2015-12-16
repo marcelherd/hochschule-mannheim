@@ -1,4 +1,4 @@
-package com.marcelherd.uebung5.model;
+package com.marcelherd.uebung5.queue;
 
 import java.util.NoSuchElementException;
 
