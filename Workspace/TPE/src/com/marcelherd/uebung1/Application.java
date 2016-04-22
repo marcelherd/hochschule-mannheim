@@ -1,37 +1,131 @@
 package com.marcelherd.uebung1;
 
+import static gdi.MakeItSimple.print;
+import static gdi.MakeItSimple.println;
+import static gdi.MakeItSimple.readInt;
+import static gdi.MakeItSimple.readLine;
+
+import com.marcelherd.uebung1.model.BTree;
+import com.marcelherd.uebung1.model.IBTree;
+
+/**
+ * Application entry-point.
+ * Provides a console interface to test B-Tree implementation.
+ * 
+ * @author Manuel Schwalm
+ * @author Marcel Herd
+ */
 public class Application {
 	
+	private IBTree first;
+	private IBTree second;
+	private IBTree active = first;
+	
+	public Application(int order) {		
+		first = new BTree(order);
+		second = new BTree(order);
+	}
+	
 	public static void main(String[] args) {
-		TreeNode test1 = new TreeNode(2);
-		TreeNode test2 = new TreeNode(2);
-		TreeNode test3 = new TreeNode(2);
+		print("Please enter order: ");
+		int order = readInt();
 		
-		test1.insert(1);
-		test1.insert(2);
-		test1.insert(3);
-		test1.insert(4);
+		Application app = new Application(order);
 		
-		test2.insert(5);
-		test2.insert(6);
-		test2.insert(7);
-		test2.insert(8);
+		while (true) {
+			app.printMenu();
+			app.prompt();
+			app.printCurrentState();
+		}
+	}
+	
+	private void printMenu() {
+		println("Available operations:");
+		println("--------------------------");
+		println("1\tinsert(Integer o)");
+		println("2\tinsert(String filename)");
+		println("3\tcontains(Integer o)");
+		println("4\tsize()");
+		println("5\theight()");
+		println("6\tgetMax()");
+		println("7\tgetMin()");
+		println("8\tisEmpty()");
+		println("9\taddAll(IBTree otherTree)");
+		println("10\tprintInOrder()");
+		println("11\tprintPreOrder()");
+		println("12\tprintPostOrder()");
+		println("13\tprintLevelOrder()");
+		println("14\tclone()");
+		println();
+	}
+	
+	private void prompt() {
+		print("Choose an operation to run: ");
+		int operation = readInt();
 		
-		test3.insert(9);
-		test3.insert(10);
-		test3.insert(11);
-		test3.insert(12);
-		
-		BTree l = new BTree(2);
-		BTree a = new BTree(2);
-		BTree b = new BTree(2);
-		
-		a.setNode(test2);
-		b.setNode(test3);
-		l.setNode(test1);
-		l.setSubTree(a);
-		l.setSubTree(b);
-		l.printPreOrder();
+		switch (operation) {
+		case 1: // insert(Integer o)
+			print("Enter parameter (Integer o): ");
+			int o = readInt();
+			println("Output: " + active.insert(o));
+			break;
+		case 2: // insert(String filename)
+			print("Enter parameter (String filename): ");
+			String filename = readLine();
+			println("Output: " + active.insert(filename));
+			break;
+		case 3: // contains(Integer o)
+			print("Enter parameter (Integer o): ");
+			o = readInt();
+			println("Output: " + active.contains(o));
+			break;
+		case 4: // size()
+			println("Output: " + active.size());
+			break;
+		case 5: // height()
+			println("Output: " + active.height());
+			break;
+		case 6: // getMax()
+			println("Output: " + active.getMax());
+			break;
+		case 7: // getMin()
+			println("Output: " + active.getMin());
+			break;
+		case 8: // isEmpty()
+			println("Output: " + active.isEmpty());
+			break;
+		case 9: // addAll(IBTree otherTree)
+			active.addAll((active == first) ? second : first);
+			break;
+		case 10: // printInOrder()
+			active.printInOrder();
+			break;
+		case 11: // printPreOrder()
+			active.printPreOrder();
+			break;
+		case 12: // printPostOrder()
+			active.printPostOrder();
+			break;
+		case 13: // printLevelOrder()
+			active.printLevelOrder();
+			break;
+		case 14: // clone()
+			if (active == first) {
+				active = second = first.clone();
+			} else {
+				active = first = second.clone();
+			}
+			break;
+		default:
+			println("Error: Unknown operation.");
+		}
+	}
+	
+	private void printCurrentState() {
+		int activeTree = (active == first ? 1 : 2);
+		println("Currently operating on tree " + activeTree + ".\nCurrent state:");
+		println(active);
+		println();
 	}
 	
 }
