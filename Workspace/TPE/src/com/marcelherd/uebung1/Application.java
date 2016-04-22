@@ -19,11 +19,12 @@ public class Application {
 	
 	private IBTree first;
 	private IBTree second;
-	private IBTree active = first;
+	private IBTree active;
 	
 	public Application(int order) {		
 		first = new BTree(order);
 		second = new BTree(order);
+		active = first;
 	}
 	
 	public static void main(String[] args) {

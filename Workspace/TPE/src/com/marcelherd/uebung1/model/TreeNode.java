@@ -1,5 +1,7 @@
 package com.marcelherd.uebung1.model;
 
+import com.marcelherd.uebung1.util.Sorting;
+
 /**
  * BTree tree node implementation.
  * 
@@ -9,16 +11,18 @@ package com.marcelherd.uebung1.model;
 public class TreeNode implements Comparable<Integer> {
 
 	private Integer[] values;
-
-	public TreeNode(int order) {
+	private boolean root;
+	private BTree parent;
+	public TreeNode(int order, BTree parent) {
 		this.values = new Integer[order * 2];
+		this.parent = parent;
 	}
 
 	public boolean insert(Integer value) {
 		for (int i = 0; i < values.length; i++) {
 			if (values[i] == null) { // node has space
 				values[i] = value;
-				bubbleSort(values); // fix order, this is possible because the node is guaranteed to be a leaf
+				Sorting.bubbleSort(values); // fix order, this is possible because the node is guaranteed to be a leaf
 				return true; // value was inserted
 			}
 		}
@@ -101,24 +105,21 @@ public class TreeNode implements Comparable<Integer> {
 		return sb.toString();
 	}
 
-	/**
-	 * Sorts the given array using bubble sort algorithm
-	 * 
-	 * @param a - array that is to be sorted
-	 */
-	private void bubbleSort(Integer[] a) {
-		boolean swapped = false;
-		do {
-			swapped = false;
-			
-			for (int i = 0; i < a.length - 1; i++) {
-				if (a[i] > a[i + 1]) { // swap
-					a[i] = a[i] ^ a[i + 1];
-					a[i + 1] = a[i] ^ a[i + 1];
-					a[i] = a[i] ^ a[i + 1];
-					swapped = true;
-				}
-			}
-		} while(swapped);
+	public boolean isRoot() {
+		return root;
 	}
+
+	public void setRoot(boolean root) {
+		this.root = root;
+	}
+
+	public BTree getParent() {
+		return parent;
+	}
+
+	public void setParent(BTree parent) {
+		this.parent = parent;
+	}
+	
+	
 }

@@ -142,44 +142,7 @@ public class BTreeTest {
 		}
 	}
 
-	/**
-	 * Test method for {@link com.marcelherd.uebung1.model.BTree#printInOrder()}.
-	 */
-	@Test
-	public void testPrintInOrder() {
-		fail("Not yet implemented");
-	}
 
-	/**
-	 * Test method for {@link com.marcelherd.uebung1.model.BTree#printPreOrder()}.
-	 */
-	@Test
-	public void testPrintPreOrder() {
-		fail("Not yet implemented");
-	}
 
-	/**
-	 * Test method for {@link com.marcelherd.uebung1.model.BTree#printPostOrder()}.
-	 */
-	@Test
-	public void testPrintPostOrder() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link com.marcelherd.uebung1.model.BTree#printLevelOrder()}.
-	 */
-	@Test
-	public void testPrintLevelOrder() {
-		fail("Not yet implemented");
-	}
-
-	/**
-	 * Test method for {@link com.marcelherd.uebung1.model.BTree#clone()}.
-	 */
-	@Test
-	public void testClone() {
-		fail("Not yet implemented");
-	}
 
 }

@@ -6,6 +6,8 @@ import static gdi.MakeItSimple.isFileReadable;
 import static gdi.MakeItSimple.openInputFile;
 import static gdi.MakeItSimple.readLine;
 
+import com.marcelherd.uebung1.util.Sorting;
+
 /**
  * Default IBTree implementation.
  * 
@@ -14,21 +16,20 @@ import static gdi.MakeItSimple.readLine;
  */
 public class BTree implements IBTree {
 	
-	/*	Kriterien B-Baum:
-	*	m = Ordnung
-	*	m-2m Elemente / Node
-	*	m+1-2m+1 Kinder / Node
-	*	Wurzel = Leaf || mindestens 2 Kinder
-	*/
+
 	
 	private TreeNode root;
-	private IBTree[] subTrees = new IBTree[0];
+	protected BTree[] subTrees = new BTree[0];
 	
+	public TreeNode getRoot() {
+		return root;
+	}
+
 	private int order;
 	
 	public BTree(int order) {
 		this.order = order; // TODO we might not need this
-		root = new TreeNode(order);
+		root = new TreeNode(order, null);
 	}
 
 	@Override
@@ -50,20 +51,53 @@ public class BTree implements IBTree {
 		
 		for (int i = 0; i < node.getValues().length; i++) { // find the next subtree to check
 			if (o < node.getValues()[i]) {
-				return findLeaf(o, subTrees[i]);
+				return findLeaf(o, subTrees[i].getRoot());
 			}
 		}
+		return subTrees[subTrees.length-1].getRoot();
 	}
 	
 	private boolean insert(Integer o, TreeNode node) {
 		if (node.insert(o)) return true; // insert successful
 		else { // node exploded
-			//TODO
+//			node.getParent().handleExplode(findMiddleElement(node.getValues(), o), node);
+//			return true;
+			
+			
+			// We don't have a tree, we have a sapling!
+			return false;
 		}
-		
-		return false;
 	}
 
+	
+
+	
+//	public void handleExplode(Integer o, TreeNode node){
+//			if(!root.insert(o)){
+//				root.getParent().handleExplode(findMiddleElement(root.getValues(), o), root);
+//				
+//			}else{
+//				for(int i = 0; i<root.getValues().length; i++){
+//					if(root.getValues()[i] == o){
+//						// i = position des eingefügten wertes. --> Position des linken Subtrees
+//					}
+//				}
+//			}
+//		
+//		
+//	}
+	
+	private int findMiddleElement(Integer[] values, Integer o){
+		Integer[] newValues = new Integer[values.length+1];
+		for(int i = 0; i<values.length; i++){
+			newValues[i] = values[i];
+		}
+		newValues[newValues.length+1] = o;
+		Sorting.bubbleSort(newValues);
+		// always odd because values.length = 2*m and newValues.length 2*m+1
+		return newValues[newValues.length/2];
+	}
+	
 	@Override
 	public boolean insert(String filename) {
 		if (isFilePresent(filename) && isFileReadable(filename)) {
@@ -148,7 +182,13 @@ public class BTree implements IBTree {
 
 	@Override
 	public void addAll(IBTree otherTree) {
-		//TODO
+		TreeNode root = ((BTree) otherTree).getRoot();
+		for(int i : root.getValues()){
+			insert(i);
+		}
+		for(BTree subTree : ((BTree) otherTree).subTrees){
+			addAll(subTree);
+		}
 	}
 	
 	@Override
@@ -183,14 +223,31 @@ public class BTree implements IBTree {
 
 	@Override
 	public void printLevelOrder() {
-		//TODO
+		System.out.println(root.toString());
 	}
 
 	public IBTree clone() {
 		IBTree retval = new BTree(this.order);
 		
-		//TODO
+		retval.addAll(this);
 		
+		return retval;
+	}
+	
+
+	@Override
+	public String toString(){
+		String retval = "";
+		int toReach = subTrees.length / 2;
+		for (int i = 0; i < subTrees.length; i++) {
+			if (i == toReach){
+				retval += root.toString();
+			}
+			subTrees[i].printInOrder();
+		}
+		if (subTrees.length == 0) {
+			retval += root.toString();
+		}
 		return retval;
 	}
 
