@@ -5,8 +5,8 @@ import static gdi.MakeItSimple.println;
 import static gdi.MakeItSimple.readInt;
 import static gdi.MakeItSimple.readLine;
 
+import com.marcelherd.uebung1.model.MyBTree;
 import com.marcelherd.uebung1.model.BTree;
-import com.marcelherd.uebung1.model.IBTree;
 
 /**
  * Application entry-point.
@@ -17,27 +17,46 @@ import com.marcelherd.uebung1.model.IBTree;
  */
 public class Application {
 	
-	private IBTree first;
-	private IBTree second;
-	private IBTree active;
+	private BTree first;
+	private BTree second;
+	private BTree active;
 	
 	public Application(int order) {		
-		first = new BTree(order);
-		second = new BTree(order);
+		first = new MyBTree(order);
+		second = new MyBTree(order);
 		active = first;
 	}
 	
 	public static void main(String[] args) {
-		print("Please enter order: ");
-		int order = readInt();
-		
-		Application app = new Application(order);
-		
-		while (true) {
-			app.printMenu();
-			app.prompt();
-			app.printCurrentState();
-		}
+//		print("Please enter order: ");
+//		int order = readInt();
+//		
+//		Application app = new Application(order);
+//		
+//		while (true) {
+//			app.printMenu();
+//			app.prompt();
+//			app.printCurrentState();
+//		}
+		BTree tree = new MyBTree(2);
+		tree.insert(6);
+		tree.insert(2);
+		tree.insert(1);
+		tree.insert(7);
+		tree.insert(0); 
+		tree.insert(4);
+		tree.insert(5);
+		tree.insert(8);
+		tree.insert(11);
+		tree.insert(10);
+		tree.insert(23);
+		tree.insert(33);
+		tree.insert(44);
+		tree.insert(55);
+		tree.insert(66);
+		tree.insert(77);
+		tree.insert(88);
+		println(tree.size());
 	}
 	
 	private void printMenu() {

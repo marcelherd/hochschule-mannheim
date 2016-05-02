@@ -1,254 +1,108 @@
 package com.marcelherd.uebung1.model;
 
-import static gdi.MakeItSimple.isEndOfInputFile;
-import static gdi.MakeItSimple.isFilePresent;
-import static gdi.MakeItSimple.isFileReadable;
-import static gdi.MakeItSimple.openInputFile;
-import static gdi.MakeItSimple.readLine;
-
-import com.marcelherd.uebung1.util.Sorting;
-
 /**
- * Default IBTree implementation.
+ * B-Tree implementation that is capable of storing all comparable elements.
+ * 
+ * This data structure keeps data sorted and guarantees searches and insertions in logarithmic time.
  * 
  * @author Manuel Schwalm
  * @author Marcel Herd
  */
-public class BTree implements IBTree {
+public interface BTree {
 	
-
+	/**
+	 * Inserts the specified element into this tree.
+	 * 
+	 * @param o - the element to insert
+	 * @return true if the element was inserted
+	 */
+	boolean insert(Comparable o);
 	
-	private TreeNode root;
-	protected BTree[] subTrees = new BTree[0];
+	/**
+	 * Inserts all elements from the specified file into this tree.
+	 * 
+	 * @param filename - path to the file containing elements
+	 * @return true if the elements were inserted
+	 */
+	boolean insert(String filename);
 	
-	public TreeNode getRoot() {
-		return root;
-	}
-
-	private int order;
+	/**
+	 * Returns true if this tree contains the specified element.
+	 * 
+	 * @param o - element whose presence in this tree is to be tested
+	 * @return true if this tree contains the specified element
+	 */
+	boolean contains(Comparable o);
 	
-	public BTree(int order) {
-		this.order = order; // TODO we might not need this
-		root = new TreeNode(order, null);
-	}
-
-	@Override
-	public boolean insert(Integer o) {
-		if (isEmpty()) {
-			root.getValues()[0] = o;
-			return true;
-		} else if (subTrees.length == 0) { // found node; node is a leaf
-			return insert(o, root);
-		} else { // find insert position (node)
-			return insert(o, findLeaf(o, root));
-		}
-	}
+	/**
+	 * Returns the number of elements in this tree.
+	 * 
+	 * @return the number of elements in this tree
+	 */
+	int size();
 	
-	private TreeNode findLeaf(Integer o, TreeNode node) {
-		if (subTrees.length == 0) { // found node; node is a leaf
-			return node;
-		}
-		
-		for (int i = 0; i < node.getValues().length; i++) { // find the next subtree to check
-			if (o < node.getValues()[i]) {
-				return findLeaf(o, subTrees[i].getRoot());
-			}
-		}
-		return subTrees[subTrees.length-1].getRoot();
-	}
+	/**
+	 * Returns the height of this tree.
+	 * 
+	 * @return the height of this tree
+	 */
+	int height();
 	
-	private boolean insert(Integer o, TreeNode node) {
-		if (node.insert(o)) return true; // insert successful
-		else { // node exploded
-//			node.getParent().handleExplode(findMiddleElement(node.getValues(), o), node);
-//			return true;
-			
-			
-			// We don't have a tree, we have a sapling!
-			return false;
-		}
-	}
-
+	/**
+	 * Returns the largest element in this tree.
+	 * 
+	 * @return the largest element in this tree
+	 */
+	Comparable getMax();
 	
-
+	/**
+	 * Returns the smallest element in this tree.
+	 * 
+	 * @return the smallest element in this tree
+	 */
+	Comparable getMin();
 	
-//	public void handleExplode(Integer o, TreeNode node){
-//			if(!root.insert(o)){
-//				root.getParent().handleExplode(findMiddleElement(root.getValues(), o), root);
-//				
-//			}else{
-//				for(int i = 0; i<root.getValues().length; i++){
-//					if(root.getValues()[i] == o){
-//						// i = position des eingefügten wertes. --> Position des linken Subtrees
-//					}
-//				}
-//			}
-//		
-//		
-//	}
+	/**
+	 * Returns true if this tree contains no elements.
+	 * 
+	 * @return true if this tree contains no elements
+	 */
+	boolean isEmpty();
 	
-	private int findMiddleElement(Integer[] values, Integer o){
-		Integer[] newValues = new Integer[values.length+1];
-		for(int i = 0; i<values.length; i++){
-			newValues[i] = values[i];
-		}
-		newValues[newValues.length+1] = o;
-		Sorting.bubbleSort(newValues);
-		// always odd because values.length = 2*m and newValues.length 2*m+1
-		return newValues[newValues.length/2];
-	}
+	/**
+	 * Inserts all elements from another tree into this tree.
+	 * 
+	 * @param otherTree - another tree, from which all elements should be inserted into this tree
+	 */
+	void addAll(BTree otherTree);
 	
-	@Override
-	public boolean insert(String filename) {
-		if (isFilePresent(filename) && isFileReadable(filename)) {
-			Object file = openInputFile(filename);
-			
-			// read data
-			StringBuilder sb = new StringBuilder();
-			while ( !isEndOfInputFile(file)) {
-				sb.append(readLine(file));
-			}
-			
-			// parse data
-			String inputData = sb.toString();
-			inputData = inputData.replaceAll("\\s+", ","); // normalize input
-			String[] inputStrings = inputData.split(",");
-			Integer[] inputValues = new Integer[inputStrings.length];
-			for (int i = 0; i < inputStrings.length; i++) {
-				inputValues[i] = Integer.parseInt(inputStrings[i]);
-			}
-			
-			// insert data
-			for (Integer i : inputValues) {
-				insert(i);
-			}
-			
-			return true; // must've worked cause otherwise there would've been an unhandled exception... :)
-		} else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean contains(Integer o) {
-		if (root.contains(o)) {
-			return true;
-		}
-		
-		for (int i = 0; i < subTrees.length; i++){
-			if (subTrees[i].contains(o)) {
-				return true;
-			}
-		}
-		
-		return false;
-	}
-
-	@Override
-	public int size() {
-		int size = root.size();
-		
-		for (int i = 0; i < subTrees.length; i++){
-			size += subTrees[i].size();
-		}
-		
-		return size;
-	}
-
-	@Override
-	public int height() {
-		// BTrees are by definition balanced, therefore all subtrees have the same height
-		return ((subTrees.length == 0) ? 1 : subTrees[0].height() + 1);
-	}
-
-	@Override
-	public Integer getMax() {
-		if (isEmpty()) return 0;
-		
-		return ((subTrees.length == 0) ? root.getMax() : subTrees[subTrees.length - 1].getMax());
-	}
-
-	@Override
-	public Integer getMin() {
-		if (isEmpty()) return 0;
-		
-		return ((subTrees.length == 0) ? root.getMin() : subTrees[0].getMin());
-	}
-
-	@Override
-	public boolean isEmpty() {
-		return (subTrees.length == 0 && root.isEmpty());
-	}
-
-	@Override
-	public void addAll(IBTree otherTree) {
-		TreeNode root = ((BTree) otherTree).getRoot();
-		for(int i : root.getValues()){
-			insert(i);
-		}
-		for(BTree subTree : ((BTree) otherTree).subTrees){
-			addAll(subTree);
-		}
-	}
+	/**
+	 * Prints all elements of this tree in in-order traversing.
+	 */
+	void printInOrder();
 	
-	@Override
-	public void printInOrder() {
-		int toReach = subTrees.length / 2;
-		for (int i = 0; i < subTrees.length; i++) {
-			if (i == toReach){
-				System.out.println(root.toString());
-			}
-			subTrees[i].printInOrder();
-		}
-		if (subTrees.length == 0) {
-			System.out.println(root.toString());
-		}
-	}
-
-	@Override
-	public void printPreOrder() {
-		System.out.println(root.toString());
-		for (int i = 0; i < subTrees.length; i++){
-			subTrees[i].printPreOrder();
-		}
-	}
-
-	@Override
-	public void printPostOrder() {
-		for (int i = 0; i < subTrees.length; i++){
-			subTrees[i].printPostOrder();
-		}
-		System.out.println(root.toString());
-	}
-
-	@Override
-	public void printLevelOrder() {
-		System.out.println(root.toString());
-	}
-
-	public IBTree clone() {
-		IBTree retval = new BTree(this.order);
-		
-		retval.addAll(this);
-		
-		return retval;
-	}
 	
-
-	@Override
-	public String toString(){
-		String retval = "";
-		int toReach = subTrees.length / 2;
-		for (int i = 0; i < subTrees.length; i++) {
-			if (i == toReach){
-				retval += root.toString();
-			}
-			subTrees[i].printInOrder();
-		}
-		if (subTrees.length == 0) {
-			retval += root.toString();
-		}
-		return retval;
-	}
+	/**
+	 * Prints all elements of this tree in pre-order traversing.
+	 */
+	void printPreOrder();
+	
+	/**
+	 * Prints all elements of this tree in post-order traversing.
+	 */
+	void printPostOrder();
+	
+	/**
+	 * Prints all elements of this tree in level-order traversing.
+	 */
+	void printLevelOrder();
+	
+	
+	/**
+	 * Returns a deep copy of this tree.
+	 * 
+	 * @return a deep copy of this tree
+	 */
+	BTree clone();
 
 }

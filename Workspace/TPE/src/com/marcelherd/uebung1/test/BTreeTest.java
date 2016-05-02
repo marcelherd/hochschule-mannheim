@@ -3,7 +3,6 @@ package com.marcelherd.uebung1.test;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.net.URL;
 
@@ -11,7 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.marcelherd.uebung1.model.BTree;
-import com.marcelherd.uebung1.model.IBTree;
+import com.marcelherd.uebung1.model.MyBTree;
 
 /**
  * Tests BTree functionality.
@@ -21,15 +20,15 @@ import com.marcelherd.uebung1.model.IBTree;
  */
 public class BTreeTest {
 	
-	private IBTree tree;
+	private BTree tree;
 	
 	@Before
 	public void setUp() { 
-	     tree = new BTree(4); 
+	     tree = new MyBTree(4); 
 	}
 
 	/**
-	 * Test method for {@link com.marcelherd.uebung1.model.BTree#insert(java.lang.Integer)}.
+	 * Test method for {@link com.marcelherd.uebung1.model.MyBTree#insert(java.lang.Integer)}.
 	 */
 	@Test
 	public void testInsertInteger() {
@@ -41,7 +40,7 @@ public class BTreeTest {
 	}
 
 	/**
-	 * Test method for {@link com.marcelherd.uebung1.model.BTree#insert(java.lang.String)}.
+	 * Test method for {@link com.marcelherd.uebung1.model.MyBTree#insert(java.lang.String)}.
 	 */
 	@Test
 	public void testInsertString() {
@@ -54,7 +53,7 @@ public class BTreeTest {
 	}
 
 	/**
-	 * Test method for {@link com.marcelherd.uebung1.model.BTree#contains(java.lang.Integer)}.
+	 * Test method for {@link com.marcelherd.uebung1.model.MyBTree#contains(java.lang.Integer)}.
 	 */
 	@Test
 	public void testContains() {
@@ -64,7 +63,7 @@ public class BTreeTest {
 	}
 
 	/**
-	 * Test method for {@link com.marcelherd.uebung1.model.BTree#size()}.
+	 * Test method for {@link com.marcelherd.uebung1.model.MyBTree#size()}.
 	 */
 	@Test
 	public void testSize() {
@@ -76,7 +75,7 @@ public class BTreeTest {
 	}
 
 	/**
-	 * Test method for {@link com.marcelherd.uebung1.model.BTree#height()}.
+	 * Test method for {@link com.marcelherd.uebung1.model.MyBTree#height()}.
 	 */
 	@Test
 	public void testHeight() {
@@ -88,7 +87,7 @@ public class BTreeTest {
 	}
 
 	/**
-	 * Test method for {@link com.marcelherd.uebung1.model.BTree#getMax()}.
+	 * Test method for {@link com.marcelherd.uebung1.model.MyBTree#getMax()}.
 	 */
 	@Test
 	public void testGetMax() {
@@ -102,7 +101,7 @@ public class BTreeTest {
 	}
 
 	/**
-	 * Test method for {@link com.marcelherd.uebung1.model.BTree#getMin()}.
+	 * Test method for {@link com.marcelherd.uebung1.model.MyBTree#getMin()}.
 	 */
 	@Test
 	public void testGetMin() {
@@ -116,7 +115,7 @@ public class BTreeTest {
 	}
 
 	/**
-	 * Test method for {@link com.marcelherd.uebung1.model.BTree#isEmpty()}.
+	 * Test method for {@link com.marcelherd.uebung1.model.MyBTree#isEmpty()}.
 	 */
 	@Test
 	public void testIsEmpty() {
@@ -126,11 +125,11 @@ public class BTreeTest {
 	}
 
 	/**
-	 * Test method for {@link com.marcelherd.uebung1.model.BTree#addAll(com.marcelherd.uebung1.model.IBTree)}.
+	 * Test method for {@link com.marcelherd.uebung1.model.MyBTree#addAll(com.marcelherd.uebung1.model.BTree)}.
 	 */
 	@Test
 	public void testAddAll() {
-		IBTree other = new BTree(4);
+		BTree other = new MyBTree(4);
 		for (int i = 1; i <= 10; i++) {
 			other.insert(i);
 		}
