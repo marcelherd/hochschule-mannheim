@@ -1,5 +1,13 @@
 package com.marcelherd.uebung1.model;
 
+import static gdi.MakeItSimple.isEndOfInputFile;
+import static gdi.MakeItSimple.isFilePresent;
+import static gdi.MakeItSimple.isFileReadable;
+import static gdi.MakeItSimple.openInputFile;
+import static gdi.MakeItSimple.readLine;
+
+import javax.activation.UnsupportedDataTypeException;
+
 /**
  * Default BTree implementation.
  * 
@@ -45,8 +53,69 @@ public class MyBTree implements BTree {
 	 */
 	@Override
 	public boolean insert(String filename) {
+		if (isFilePresent(filename) && isFileReadable(filename)) {
+			Object file = openInputFile(filename);
+			
+			// read
+			StringBuilder sb = new StringBuilder();
+			while ( !isEndOfInputFile(file)) {
+				sb.append(readLine(file));
+			}
+			
+			// parse
+			String inputData = sb.toString();
+			inputData = inputData.replaceAll("\\s+", ","); // normalize input
+			String[] inputStrings = inputData.split(","); // first string declares data type, subsequent strings are keys
+			
+			if (inputStrings.length > 1) { // there are keys to insert
+				/*
+				 * While it would be necessary to use reflection to fully complete the given assignment,
+				 * it is simply not feasible. Our best bet is to implement this method for only a select few
+				 * Comparable types.
+				 */
+				try {
+					Comparable[] inputValues = new Integer[inputStrings.length - 1];
+					
+					for (int i = 1; i < inputStrings.length; i++) {
+						switch (inputStrings[0]) {
+							case "Integer":
+								inputValues[i - 1] = Integer.parseInt(inputStrings[i]);
+								break;
+							case "String":
+								inputValues[i - 1] = inputStrings[i];
+								break;
+							case "Double":
+								inputValues[i - 1] = Double.parseDouble(inputStrings[i]);
+								break;
+							case "Float":
+								inputValues[i - 1] = Float.parseFloat(inputStrings[i]);
+								break;
+							case "Long":
+								inputValues[i - 1] = Long.parseLong(inputStrings[i]);
+								break;
+							default:
+								throw new UnsupportedDataTypeException("Unsupported data type: " + inputStrings[0]);
+						}
+					}
+					
+					for (Comparable c : inputValues) {
+						insert(c);
+					}
+				} catch (UnsupportedDataTypeException e) {
+					System.out.println(e.getMessage());
+					return false;
+				}
+			}
+			
+			return true;
+		} else {
+			return false;
+		}
+	}
+	
+	@Override
+	public void delete(Comparable obj) {
 		// TODO Auto-generated method stub
-		return false;
 	}
 
 	/**
@@ -54,7 +123,29 @@ public class MyBTree implements BTree {
 	 */
 	@Override
 	public boolean contains(Comparable o) {
-		// TODO Auto-generated method stub
+		return contains(o, root);
+	}
+
+	/**
+	 * Returns true if this tree contains the specified element.
+	 * 
+	 * @param o - element whose presence in this tree is to be tested
+	 * @param node - node, within which element is being searched for
+	 * @return true if this tree contains the specified element
+	 */
+	private boolean contains(Comparable o, TreeNode node) {
+		if (node == null) return false;
+		
+		for (int i = 0; i < node.getKeys().length; i++) { // check current node
+			if (node.getKeys()[i] != null && o.compareTo(node.getKeys()[i]) == 0) {
+				return true;
+			}
+		}
+		
+		for (int i = 0; i < node.getChildren().length; i++) { // check children
+			if (contains(o, node.getChildren()[i])) return true;
+		}
+		
 		return false;
 	}
 
@@ -91,8 +182,10 @@ public class MyBTree implements BTree {
 	 */
 	@Override
 	public int height() {
-		// all leaves are on the same level, therefore it is sufficient to check the height of any subtree
-		return 0;
+		int height = 1;
+		TreeNode child = root;
+		while ((child = child.getChildren()[0]) != null) height++; // all leaves are on the same level, therefore it is sufficient to check the height of any subtree
+		return height;
 	}
 
 	/**
@@ -100,8 +193,25 @@ public class MyBTree implements BTree {
 	 */
 	@Override
 	public Comparable getMax() {
-		// TODO Auto-generated method stub
-		return null;
+		if (isEmpty()) return null;
+		
+		TreeNode child = root;
+		while (! child.isLeaf()) {
+			for (int i = child.getChildren().length - 1; i >= 0; i--) { // find node that contains the largest keys
+				if (child.getChildren()[i] != null) {
+					child = child.getChildren()[i];
+					break;
+				}
+			}
+		}
+
+		Comparable max = null;
+		for (int i = child.getKeys().length - 1; i >= 0; i--) {
+			max = child.getKeys()[i];
+			if (max != null) break;
+		}
+		
+		return max;
 	}
 
 	/**
@@ -109,8 +219,14 @@ public class MyBTree implements BTree {
 	 */
 	@Override
 	public Comparable getMin() {
-		// TODO Auto-generated method stub
-		return null;
+		if (isEmpty()) return null;
+		
+		TreeNode child = root;
+		while (! child.isLeaf()) {
+			child = child.getChildren()[0];
+		}
+
+		return child.getKeys()[0];
 	}
 
 	/**
@@ -126,8 +242,21 @@ public class MyBTree implements BTree {
 	 */
 	@Override
 	public void addAll(BTree otherTree) {
-		// TODO Auto-generated method stub
-		
+		addAll(((MyBTree) otherTree).getRoot());
+	}
+	
+	/**
+	 * Inserts all elements in node into this tree.
+	 * 
+	 * @param node - the node, of which all elements should be inserted into this tree
+	 */
+	private void addAll(TreeNode node) {
+		if (node == null) return;
+		for (int i = 0; i < node.getKeys().length; i++) {
+			if (node.getKeys()[i] != null) insert(node.getKeys()[i]);
+			addAll(node.getChildren()[i]);
+		}
+		addAll(node.getChildren()[node.getChildren().length - 1]);
 	}
 
 	/**
@@ -135,8 +264,22 @@ public class MyBTree implements BTree {
 	 */
 	@Override
 	public void printInOrder() {
-		// TODO Auto-generated method stub
-		
+		printInOrder(root);
+		System.out.println();
+	}
+	
+	/**
+	 * Prints all elements in node using InOrder-Traversal.
+	 * 
+	 * @param node - the node, of which all elements should be printed
+	 */
+	private void printInOrder(TreeNode node) {
+		if (node == null) return;
+		for (int i = 0; i < node.getKeys().length; i++) {
+			printInOrder(node.getChildren()[i]);
+			if (node.getKeys()[i] != null) System.out.print(node.getKeys()[i] + " ");
+		}
+		printInOrder(node.getChildren()[node.getChildren().length - 1]);
 	}
 
 	/**
@@ -144,8 +287,23 @@ public class MyBTree implements BTree {
 	 */
 	@Override
 	public void printPreOrder() {
-		// TODO Auto-generated method stub
-		
+		printPreOrder(root);
+		System.out.println();
+	}
+	
+	
+	/**
+	 * Prints all elements in node using PreOrder-Traversal.
+	 * 
+	 * @param node - the node, of which all elements should be printed
+	 */
+	private void printPreOrder(TreeNode node) {
+		if (node == null) return;
+		for (int i = 0; i < node.getKeys().length; i++) {
+			if (node.getKeys()[i] != null) System.out.print(node.getKeys()[i] + " ");
+			printPreOrder(node.getChildren()[i]);
+		}
+		printPreOrder(node.getChildren()[node.getChildren().length - 1]);
 	}
 
 	/**
@@ -153,8 +311,24 @@ public class MyBTree implements BTree {
 	 */
 	@Override
 	public void printPostOrder() {
-		// TODO Auto-generated method stub
-		
+		printPostOrder(root);
+		System.out.println();
+	}
+	
+	/**
+	 * Prints all elements in node using PostOrder-Traversal.
+	 * 
+	 * @param node - the node, of which all elements should be printed
+	 */
+	private void printPostOrder(TreeNode node) {
+		if (node == null) return;
+		for (int i = 0; i < node.getKeys().length; i++) {
+			printPostOrder(node.getChildren()[i]);
+		}
+		printPostOrder(node.getChildren()[node.getChildren().length - 1]);
+		for (int i = 0; i < node.getKeys().length; i++) {
+			if (node.getKeys()[i] != null) System.out.print(node.getKeys()[i] + " ");
+		}
 	}
 
 	/**
@@ -171,8 +345,18 @@ public class MyBTree implements BTree {
 	 */
 	@Override
 	public BTree clone() {
-		// TODO Auto-generated method stub
-		return null;
+		MyBTree newTree = new MyBTree(order);
+		TreeNode newTreeRoot = new TreeNode(root);
+		newTree.setRoot(newTreeRoot);
+		return newTree;
+	}
+	
+	public TreeNode getRoot() {
+		return root;
+	}
+	
+	public void setRoot(TreeNode root) {
+		this.root = root;
 	}
 
 }

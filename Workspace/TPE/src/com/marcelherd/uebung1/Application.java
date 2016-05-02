@@ -28,35 +28,16 @@ public class Application {
 	}
 	
 	public static void main(String[] args) {
-//		print("Please enter order: ");
-//		int order = readInt();
-//		
-//		Application app = new Application(order);
-//		
-//		while (true) {
-//			app.printMenu();
-//			app.prompt();
-//			app.printCurrentState();
-//		}
-		BTree tree = new MyBTree(2);
-		tree.insert(6);
-		tree.insert(2);
-		tree.insert(1);
-		tree.insert(7);
-		tree.insert(0); 
-		tree.insert(4);
-		tree.insert(5);
-		tree.insert(8);
-		tree.insert(11);
-		tree.insert(10);
-		tree.insert(23);
-		tree.insert(33);
-		tree.insert(44);
-		tree.insert(55);
-		tree.insert(66);
-		tree.insert(77);
-		tree.insert(88);
-		println(tree.size());
+		print("Please enter order: ");
+		int order = readInt();
+		
+		Application app = new Application(order);
+		
+		while (true) {
+			app.printMenu();
+			app.prompt();
+			app.printCurrentState();
+		}
 	}
 	
 	private void printMenu() {
@@ -70,12 +51,13 @@ public class Application {
 		println("6\tgetMax()");
 		println("7\tgetMin()");
 		println("8\tisEmpty()");
-		println("9\taddAll(IBTree otherTree)");
+		println("9\taddAll(BTree otherTree)");
 		println("10\tprintInOrder()");
 		println("11\tprintPreOrder()");
 		println("12\tprintPostOrder()");
 		println("13\tprintLevelOrder()");
 		println("14\tclone()");
+		println("15\tswitch working tree");
 		println();
 	}
 	
@@ -114,7 +96,7 @@ public class Application {
 		case 8: // isEmpty()
 			println("Output: " + active.isEmpty());
 			break;
-		case 9: // addAll(IBTree otherTree)
+		case 9: // addAll(BTree otherTree)
 			active.addAll((active == first) ? second : first);
 			break;
 		case 10: // printInOrder()
@@ -136,6 +118,9 @@ public class Application {
 				active = first = second.clone();
 			}
 			break;
+		case 15: // switch
+			active = (active == first) ? second : first;
+			break;
 		default:
 			println("Error: Unknown operation.");
 		}
@@ -144,7 +129,7 @@ public class Application {
 	private void printCurrentState() {
 		int activeTree = (active == first ? 1 : 2);
 		println("Currently operating on tree " + activeTree + ".\nCurrent state:");
-		println(active);
+		active.printInOrder();
 		println();
 	}
 	

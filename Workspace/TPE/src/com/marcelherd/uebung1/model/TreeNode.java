@@ -22,7 +22,7 @@ public class TreeNode {
 		// alle blätter liegen auf dem gleichen niveau
 	}
 	
-	private TreeNode(TreeNode copy) {
+	TreeNode(TreeNode copy) {
 		this.order = copy.getOrder();
 		this.keys = copy.keys.clone();
 		this.children = copy.children.clone();
@@ -38,75 +38,148 @@ public class TreeNode {
 	 * @return null if explosions were handled within the TreeNode, or the element
 	 * 		   that should be inserted in the parent node
 	 */
-	public Comparable insert(Comparable o, TreeNode returnNode) {
-		if (! isLeaf()) { // can't insert o in this node
-			for (int i = 0; i < keys.length; i++) { // find node where o should be inserted
-				if (keys[i] == null ){
-					o = children[i].insert(o, returnNode);
+//	public Comparable insert(Comparable o, TreeNode returnNode) {
+//		if (! isLeaf()) { // can't insert o in this node
+//			for (int i = 0; i < keys.length; i++) { // find node where o should be inserted
+//				if (keys[i] == null ){
+//					o = children[i].insert(o, returnNode);
+//					break;
+//				}	
+//
+//				if (keys[i].compareTo(o) == 0) { // current key is equal to o
+//					return null; // duplicate key, don't do anything else
+//				} else if (keys[i].compareTo(o) > 0) { // current key is greater than o
+//					o = children[i].insert(o, returnNode); // insert o in the subtree left of this key
+//					break;
+//				}
+//			}
+//		}
+//		
+//		// find where o should be inserted within node
+//		if (o != null) {
+//			int insertionIndex = 0;
+//			while (insertionIndex < keys.length && keys[insertionIndex] != null && keys[insertionIndex].compareTo(o) < 0) { // find insertion index
+//				if (keys[insertionIndex].compareTo(o) == 0) { // duplicate key, don't do anything else
+//					return null;
+//				} 
+//				// current key is smaller than o, move further along
+//				insertionIndex++;
+//			}
+//			
+//			Comparable tmpKey = null;
+//			TreeNode tmpNode = null;
+//			TreeNode newNode = new TreeNode(returnNode);
+//
+//			// insert o and right-shift subsequent siblings
+//			while (insertionIndex < keys.length) { 
+//				tmpKey = keys[insertionIndex];
+//				tmpNode = children[insertionIndex + 1];
+//				keys[insertionIndex] = o;
+//				children[insertionIndex + 1] = (newNode == null || isLeaf()) ? null : newNode;
+//				o = tmpKey;
+//				newNode = tmpNode;
+//				insertionIndex++;
+//			}
+//			
+//			// handle explosion
+//			if (o != null) {
+//				tmpNode = new TreeNode(order);
+//				
+//				for (insertionIndex = 0; insertionIndex < order-1; insertionIndex++) {
+//					tmpNode.keys[insertionIndex] = keys[order + insertionIndex + 1];
+//					tmpNode.children[insertionIndex] = children[order + insertionIndex + 1];
+//					keys[order+insertionIndex + 1] = null;
+//					children[order+insertionIndex + 1] = null;
+//				}
+//
+//				tmpNode.children[order-1] = children[2 * order];
+//				children[2 * order] = null;
+//				tmpNode.keys[order-1] = o;
+//				tmpNode.children[order] = (newNode == null || isLeaf()) ? null : newNode;
+//				
+//				o = keys[order]; // middle element
+//				keys[order] = null;
+//				children[order + 1] = null;
+//				
+//				returnNode.setKeys(tmpNode.keys.clone());
+//				returnNode.setChildren(tmpNode.children.clone());
+//			}
+//		}
+//		
+//		return o;
+//	}
+	
+	Comparable insert(Comparable newKey,TreeNode returnNode) {
+		// Einfügeknoten suchen (rekursiv)
+		if (!isLeaf()) {
+			for (int i = 0; i < children.length; i++) {
+				if (i == keys.length || keys[i] == null){
+					newKey = children[i].insert(newKey,returnNode);
 					break;
 				}	
-
-				if (keys[i].compareTo(o) == 0) { // current key is equal to o
-					return null; // duplicate key, don't do anything else
-				} else if (keys[i].compareTo(o) > 0) { // current key is greater than o
-					o = children[i].insert(o, returnNode); // insert o in the subtree left of this key
+				int cmp = keys[i].compareTo(newKey);
+				if (cmp == 0) return null;
+				else if (cmp > 0) {
+					newKey = children[i].insert(newKey,returnNode);
 					break;
 				}
 			}
 		}
-		
-		// find where o should be inserted within node
-		if (o != null) {
-			int insertionIndex = 0;
-			while (insertionIndex < keys.length && keys[insertionIndex] != null && keys[insertionIndex].compareTo(o) < 0) { // find insertion index
-				if (keys[insertionIndex].compareTo(o) == 0) { // duplicate key, don't do anything else
-					return null;
-				} 
-				// current key is smaller than o, move further along
-				insertionIndex++;
-			}
-			
+		// Einfügeposition in Knoten suchen
+		if (newKey != null) {
+			int i=0;
+			while (i < keys.length 
+					&& keys[i] != null
+					&& keys[i].compareTo(newKey) < 0) 
+				i++;
+			if (i < keys.length 
+					&& keys[i] != null 
+					&& keys[i].compareTo(newKey) == 0) 
+				return null;
 			Comparable tmpKey = null;
 			TreeNode tmpNode = null;
 			TreeNode newNode = new TreeNode(returnNode);
-
-			// insert o and right-shift subsequent siblings
-			while (insertionIndex < keys.length) { 
-				tmpKey = keys[insertionIndex];
-				tmpNode = children[insertionIndex + 1];
-				keys[insertionIndex] = o;
-				children[insertionIndex + 1] = (newNode == null || isLeaf()) ? null : newNode;
-				o = tmpKey;
+			// Einfügen und Nachfolger weiterrücken
+			while (i < keys.length) {
+				tmpKey = keys[i];
+				tmpNode = children[i+1];
+				keys[i] = newKey;
+				children[i+1] = (newNode == null || isLeaf()) ?
+					null :
+					newNode;
+				newKey = tmpKey;
 				newNode = tmpNode;
-				insertionIndex++;
+				i++;
 			}
-			
-			// handle explosion
-			if (o != null) {
+			// Überlaufbehandlung
+			if (newKey != null) {
+				// Neuen Knoten erzeugen, Schluessel
+				// kopieren und aus altem Knoten loeschen
 				tmpNode = new TreeNode(order);
-				
-				for (insertionIndex = 0; insertionIndex < order-1; insertionIndex++) {
-					tmpNode.keys[insertionIndex] = keys[order + insertionIndex + 1];
-					tmpNode.children[insertionIndex] = children[order + insertionIndex + 1];
-					keys[order+insertionIndex + 1] = null;
-					children[order+insertionIndex + 1] = null;
+				for (i = 0; i < order-1; i++) {
+					tmpNode.keys[i] = keys[order+i+1];
+					tmpNode.children[i] = children[order+i+1];
+					keys[order+i+1] = null;
+					children[order+i+1] = null;
 				}
-
-				tmpNode.children[order-1] = children[2 * order];
-				children[2 * order] = null;
-				tmpNode.keys[order-1] = o;
-				tmpNode.children[order] = (newNode == null || isLeaf()) ? null : newNode;
-				
-				o = keys[order]; // middle element
+				// BUGFIX
+				// RAUS: tmpNode.children[order-1] = children[order+i];
+				tmpNode.children[order-1] = children[2*order]; // REIN
+				children[2*order] = null; // REIN
+				tmpNode.keys[order-1] = newKey;
+				tmpNode.children[order] = (newNode == null || isLeaf()) ?
+					null :
+					newNode;
+				// mittlerer Schluessel als Rueckgabewert
+				newKey = keys[order];
 				keys[order] = null;
-				children[order + 1] = null;
-				
+				children[order+1] = null;
+				// Werte des Rueckgabeknoten setzen
 				returnNode.setKeys(tmpNode.keys.clone());
 				returnNode.setChildren(tmpNode.children.clone());
 			}
 		}
-		
-		return o;
+		return newKey;
 	}
 	
 	/**

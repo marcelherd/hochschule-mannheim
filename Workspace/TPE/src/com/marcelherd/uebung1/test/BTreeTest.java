@@ -24,7 +24,7 @@ public class BTreeTest {
 	
 	@Before
 	public void setUp() { 
-	     tree = new MyBTree(4); 
+	     tree = new MyBTree(1); 
 	}
 
 	/**
@@ -70,8 +70,8 @@ public class BTreeTest {
 		assertEquals(0, tree.size());
 		tree.insert(5);
 		assertEquals(1, tree.size());
-//		tree.insert(5);
-//		assertEquals(1, tree.size());
+		tree.insert(5);
+		assertEquals(1, tree.size());
 	}
 
 	/**
@@ -91,7 +91,7 @@ public class BTreeTest {
 	 */
 	@Test
 	public void testGetMax() {
-		assertEquals(0, (int) tree.getMax());
+		assertEquals(null, tree.getMax());
 		tree.insert(10);
 		assertEquals(10, (int) tree.getMax());
 		tree.insert(5);
@@ -105,13 +105,13 @@ public class BTreeTest {
 	 */
 	@Test
 	public void testGetMin() {
-		assertEquals(0, (int) tree.getMax());
+		assertEquals(null, tree.getMin());
 		tree.insert(10);
-		assertEquals(10, (int) tree.getMax());
+		assertEquals(10, (int) tree.getMin());
 		tree.insert(5);
-		assertEquals(10, (int) tree.getMax());
+		assertEquals(5, (int) tree.getMin());
 		tree.insert(55);
-		assertEquals(55, (int) tree.getMax());
+		assertEquals(5, (int) tree.getMin());
 	}
 
 	/**
@@ -140,8 +140,5 @@ public class BTreeTest {
 			assertTrue(tree.contains(i));
 		}
 	}
-
-
-
 
 }

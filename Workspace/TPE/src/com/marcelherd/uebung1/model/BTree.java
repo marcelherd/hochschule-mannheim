@@ -27,6 +27,13 @@ public interface BTree {
 	boolean insert(String filename);
 	
 	/**
+	 * Deletes obj, if it is in this tree.
+	 * 
+	 * @param obj - element, that is to be deleted from this tree
+	 */
+	void delete(Comparable obj);
+	
+	/**
 	 * Returns true if this tree contains the specified element.
 	 * 
 	 * @param o - element whose presence in this tree is to be tested
