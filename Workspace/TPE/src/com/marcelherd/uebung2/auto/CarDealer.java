@@ -17,18 +17,37 @@ public class CarDealer {
 		cars = new MyBTree(100);
 	}
 	
+	/**
+	 * Returns true if the car dealer is able to incorporate this car into his assortment.
+	 * 
+	 * @param car - car that the dealer should incorporate into his assortment
+	 * @return true if the car dealer is able to incorporate this car into his assortment
+	 */
 	public boolean offer(Car car) {
 		return cars.insert(car);
 	}
 	
+	/**
+	 * Sells the car and removes it from the dealers assortment.
+	 * 
+	 * @param car - car that is being sold
+	 */
 	public void sell(Car car) {
 		cars.delete(car);
 	}
 	
+	/**
+	 * Lists alls cars, that the dealer currently has for sale.
+	 */
 	public void printCarsForSale() {
 		cars.printInOrder();
 	}
 	
+	/**
+	 * Returns all cars that the dealer is currently offering
+	 * 
+	 * @return all cars that the dealer is currently offering
+	 */
 	public BTree getCars() {
 		return cars;
 	}
