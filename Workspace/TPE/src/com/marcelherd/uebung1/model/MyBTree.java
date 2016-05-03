@@ -34,7 +34,19 @@ public class MyBTree implements BTree {
 	public boolean insert(Comparable o) {
 		if (! isEmpty()) {
 			if (! o.getClass().equals(root.getKeys()[0].getClass())) { // compare o's type with that of an element within the tree
-				return false; // o is of a different type than the existing element(s), it can not be inserted
+				/**
+				 * Aufgabenstellung:
+				 * > Im B-Baum sollen nicht nur Integer-Objekte verwaltet werden, sondern alle Arten von Objekten, 
+				 * > die miteinander vergleichbar sind. Es sind immer nur Elemente derselben Klasse miteinander vergleichbar!
+				 * 
+				 * beißt sich leider mit der Auto Verwaltung. Kompromiss: Auch Elemente, die die selbe, direkte Superklasse haben,
+				 * sind miteinander vergleichbar - somit funktioniert die Auto Verwaltung.
+				 */
+				if (! o.getClass().getGenericSuperclass().getTypeName().equals("java.lang.Object")) { // if o has a superclass that is not Object
+					if (! o.getClass().getGenericSuperclass().getTypeName().equals(root.getKeys()[0].getClass().getGenericSuperclass().getTypeName())) { // they don't share a direct superclass
+						return false; // o is of a different type than the existing element(s), it can not be inserted
+					}
+				}
 			}
 		}
 		
