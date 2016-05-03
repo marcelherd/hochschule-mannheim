@@ -6,6 +6,9 @@ import static gdi.MakeItSimple.isFileReadable;
 import static gdi.MakeItSimple.openInputFile;
 import static gdi.MakeItSimple.readLine;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 import javax.activation.UnsupportedDataTypeException;
 
 /**
@@ -336,8 +339,43 @@ public class MyBTree implements BTree {
 	 */
 	@Override
 	public void printLevelOrder() {
-		// TODO Auto-generated method stub
-		
+		if (! isEmpty()) {
+			Queue<Comparable> queue = new LinkedList<Comparable>();
+			
+			for (Comparable key : root.getKeys()) { // root keys
+				if (key != null) queue.offer(key);
+			}
+			
+			if (! root.isLeaf()) { // root has children
+				addKeysLevelOrder(root.getChildren(), queue);
+			}
+			
+			while (! queue.isEmpty()) {
+				System.out.print(queue.poll() + " ");
+			}
+		}
+	}
+	
+	/**
+	 * Traverses the children in level order and appends their keys to the queue.
+	 * 
+	 * @param children - tree nodes, that are to be traversed
+	 * @param queue - queue, to which the keys are added
+	 */
+	private void addKeysLevelOrder(TreeNode[] children, Queue<Comparable> queue) {
+		for (TreeNode child : children) {
+			if (child != null) {
+				Comparable[] keys = child.getKeys();
+				for (Comparable key : keys) {
+					if (key != null) queue.add(key);
+				}
+			}
+		}
+		for (TreeNode child : children) {
+			if (child != null && ! child.isLeaf()) {
+				addKeysLevelOrder(child.getChildren(), queue);
+			}
+		}
 	}
 
 	/**
