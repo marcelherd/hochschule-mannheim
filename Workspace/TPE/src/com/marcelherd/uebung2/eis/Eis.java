@@ -3,7 +3,7 @@ package com.marcelherd.uebung2.eis;
 import java.util.Arrays;
 
 /**
- * Definiert ein Eisgericht
+ * Definiert ein Eisgericht.
  * 
  * @author Manuel Schwalm
  * @author Marcel Herd
@@ -11,30 +11,38 @@ import java.util.Arrays;
 public abstract class Eis {
 	
 	/**
-	 * Bezeichnung des Eises z.B. Spaghettieis/Bananasplit/etc.
+	 * Bezeichnung des Eises.
+	 * z.B. Spaghettieis/Bananasplit/etc.
 	 */
 	private String name;
 	
 	/**
-	 * Waffel/Becher/Teller/Schüssel/Glas/etc.
+	 * Behältnis des Eises.
+	 * z.B. Waffel/Becher/Teller/Schüssel/Glas/etc.
 	 */
 	private String behaeltnis;
 	
 	/**
-	 * Bällchen/Bälle/Spaghettis/Klekse/etc. 
+	 * Art des Eises.
+	 * z.B. Bällchen/Bälle/Spaghettis/Klekse/etc. 
 	 */
 	private String art;
 	
 	/**
-	 * Vanille/Schokolade/Straciatella/Zitrone/etc.
+	 * Geschmackssorten des Eises.
+	 * z.B. Vanille/Schokolade/Straciatella/Zitrone/etc.
 	 */
 	private String[] sorten;
 	
 	/**
-	 * Sahne/Schokosträusel/Keks/Soße/etc.
+	 * Extras des Eises.
+	 * z.B. Sahne/Schokosträusel/Keks/Soße/etc.
 	 */
 	private String[] extras;
 	
+	/**
+	 * Preis des Eises in Euro.
+	 */
 	private double preis;
 	
 	public Eis() {
@@ -42,19 +50,19 @@ public abstract class Eis {
 	}
 	
 	/**
-	 * Bereitet das Eis vor - Behältnis nehmen..
+	 * Bereitet das Eis vor.
 	 */
-	public abstract void vorbereiten();
+	abstract void vorbereiten();
 	
 	/**
-	 * Füllt das Behältnis mit Sorten nach Art
+	 * Füllt das Behältnis mit Sorten nach Art.
 	 */
-	public abstract void fuellen();
+	abstract void fuellen();
 	
 	/**
-	 * Dekoriert das Eis mit Extras
+	 * Dekoriert das Eis mit Extras.
 	 */
-	public abstract void dekorieren();
+	abstract void dekorieren();
 
 	public String getName() {
 		return name;

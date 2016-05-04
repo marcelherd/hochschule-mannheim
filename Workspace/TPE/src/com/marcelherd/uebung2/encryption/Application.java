@@ -1,4 +1,4 @@
-package com.marcelherd.uebung2;
+package com.marcelherd.uebung2.encryption;
 
 import com.marcelherd.uebung2.encryption.Crypter;
 import com.marcelherd.uebung2.encryption.CrypterCaesar;
