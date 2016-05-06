@@ -1,14 +1,14 @@
-package com.marcelherd.uebung2.eis;
+package com.marcelherd.uebung2.eis.vendor;
 
-public class MannheimerNussBecher extends Eis {
+public class BerlinerPfirsichSchale extends Eis {
 	
-	public MannheimerNussBecher() {
-		setName("Nuss Becher");
-		setBehaeltnis("Becher");
+	BerlinerPfirsichSchale() {
+		setName("Pfirsich Schale");
+		setBehaeltnis("Schale");
 		setArt("Bällchen");
-		setSorten(new String[] { "Nuss" });
-		setExtras(new String[] { "Nusssoße", "Nussstückchen", "Sahne" });
-		setPreis(5.5d);
+		setSorten(new String[] { "Pfirsich", "Joghurt" });
+		setExtras(new String[] { "Pfirsich Würfel", "Waffel", "Sahne" });
+		setPreis(5.0d);
 	}
 
 	/**
@@ -16,7 +16,7 @@ public class MannheimerNussBecher extends Eis {
 	 */
 	@Override
 	void vorbereiten() {
-		System.out.println(getName() + " wird im " + getBehaeltnis() + " vorbereitet.");
+		System.out.println(getName() + " wird in der " + getBehaeltnis() + " vorbereitet.");
 	}
 
 	/**

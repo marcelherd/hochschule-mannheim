@@ -4,6 +4,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.marcelherd.uebung2.eis.vendor.BerlinerEisdiele;
+import com.marcelherd.uebung2.eis.vendor.Eisdiele;
+import com.marcelherd.uebung2.eis.vendor.KoelnerEisdiele;
+import com.marcelherd.uebung2.eis.vendor.MannheimerEisdiele;
+
 /**
  * Application entry-point.
  * 

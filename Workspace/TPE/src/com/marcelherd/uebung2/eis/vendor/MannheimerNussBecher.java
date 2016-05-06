@@ -1,16 +1,16 @@
-package com.marcelherd.uebung2.eis;
+package com.marcelherd.uebung2.eis.vendor;
 
-public class MannheimerBananaSplit extends Eis {
-
-	public MannheimerBananaSplit() {
-		setName("Banana Split");
+public class MannheimerNussBecher extends Eis {
+	
+	MannheimerNussBecher() {
+		setName("Nuss Becher");
 		setBehaeltnis("Becher");
 		setArt("Bällchen");
-		setSorten(new String[] { "Banane", "Vanille" });
-		setExtras(new String[] { "Schokoladen-Soße", "Waffel", "1 halbierte Banane", "Sahne" });
-		setPreis(5d);
+		setSorten(new String[] { "Nuss" });
+		setExtras(new String[] { "Nusssoße", "Nussstückchen", "Sahne" });
+		setPreis(5.5d);
 	}
-	
+
 	/**
 	 * {@inheritDoc}
 	 */

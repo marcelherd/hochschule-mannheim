@@ -1,14 +1,14 @@
-package com.marcelherd.uebung2.eis;
+package com.marcelherd.uebung2.eis.vendor;
 
-public class KoelnerSpaghettiEis extends Eis {
+public class BerlinerSpaghettiEis extends Eis {
 	
-	public KoelnerSpaghettiEis() {
+	BerlinerSpaghettiEis() {
 		setName("Spaghetti Eis");
-		setBehaeltnis("Becher");
+		setBehaeltnis("Schale");
 		setArt("Spaghettis");
 		setSorten(new String[] { "Vanille" });
 		setExtras(new String[] { "Erdbeersoße", "Geraspelte weiße Schokolade", "Sahne" });
-		setPreis(4.5d);
+		setPreis(4d);
 	}
 
 	/**
@@ -16,7 +16,7 @@ public class KoelnerSpaghettiEis extends Eis {
 	 */
 	@Override
 	void vorbereiten() {
-		System.out.println(getName() + " wird im " + getBehaeltnis() + " vorbereitet.");
+		System.out.println(getName() + " wird in der " + getBehaeltnis() + " vorbereitet.");
 	}
 
 	/**

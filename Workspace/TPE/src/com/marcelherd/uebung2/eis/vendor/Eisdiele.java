@@ -1,4 +1,4 @@
-package com.marcelherd.uebung2.eis;
+package com.marcelherd.uebung2.eis.vendor;
 
 /**
  * Eisdiele.

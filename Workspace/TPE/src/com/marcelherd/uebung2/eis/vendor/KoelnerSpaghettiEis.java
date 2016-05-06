@@ -1,13 +1,13 @@
-package com.marcelherd.uebung2.eis;
+package com.marcelherd.uebung2.eis.vendor;
 
-public class BerlinerKaramelBecher extends Eis {
+public class KoelnerSpaghettiEis extends Eis {
 	
-	public BerlinerKaramelBecher() {
-		setName("Karamel Becher");
+	KoelnerSpaghettiEis() {
+		setName("Spaghetti Eis");
 		setBehaeltnis("Becher");
-		setArt("Bällchen");
-		setSorten(new String[] { "Vanille", "Karamel" });
-		setExtras(new String[] { "Karamelsoße", "Krokant Streußeln", "Sahne" });
+		setArt("Spaghettis");
+		setSorten(new String[] { "Vanille" });
+		setExtras(new String[] { "Erdbeersoße", "Geraspelte weiße Schokolade", "Sahne" });
 		setPreis(4.5d);
 	}
 

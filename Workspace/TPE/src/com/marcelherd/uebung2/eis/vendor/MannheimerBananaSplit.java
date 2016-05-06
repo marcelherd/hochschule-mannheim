@@ -1,22 +1,22 @@
-package com.marcelherd.uebung2.eis;
+package com.marcelherd.uebung2.eis.vendor;
 
-public class BerlinerPfirsichSchale extends Eis {
-	
-	public BerlinerPfirsichSchale() {
-		setName("Pfirsich Schale");
-		setBehaeltnis("Schale");
+public class MannheimerBananaSplit extends Eis {
+
+	MannheimerBananaSplit() {
+		setName("Banana Split");
+		setBehaeltnis("Becher");
 		setArt("Bällchen");
-		setSorten(new String[] { "Pfirsich", "Joghurt" });
-		setExtras(new String[] { "Pfirsich Würfel", "Waffel", "Sahne" });
-		setPreis(5.0d);
+		setSorten(new String[] { "Banane", "Vanille" });
+		setExtras(new String[] { "Schokoladen-Soße", "Waffel", "1 halbierte Banane", "Sahne" });
+		setPreis(5d);
 	}
-
+	
 	/**
 	 * {@inheritDoc}
 	 */
 	@Override
 	void vorbereiten() {
-		System.out.println(getName() + " wird in der " + getBehaeltnis() + " vorbereitet.");
+		System.out.println(getName() + " wird im " + getBehaeltnis() + " vorbereitet.");
 	}
 
 	/**

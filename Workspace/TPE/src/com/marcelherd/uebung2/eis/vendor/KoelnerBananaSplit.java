@@ -1,8 +1,8 @@
-package com.marcelherd.uebung2.eis;
+package com.marcelherd.uebung2.eis.vendor;
 
 public class KoelnerBananaSplit extends Eis {
 	
-	public KoelnerBananaSplit() {
+	KoelnerBananaSplit() {
 		setName("Banana Split");
 		setBehaeltnis("Schale");
 		setArt("Bälle");

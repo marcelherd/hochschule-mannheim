@@ -1,14 +1,14 @@
-package com.marcelherd.uebung2.eis;
+package com.marcelherd.uebung2.eis.vendor;
 
-public class KoelnerErdbeerTraum extends Eis {
+public class BerlinerKaramelBecher extends Eis {
 	
-	public KoelnerErdbeerTraum() {
-		setName("Erdbeertraum");
+	BerlinerKaramelBecher() {
+		setName("Karamel Becher");
 		setBehaeltnis("Becher");
-		setArt("Bälle");
-		setSorten(new String[] { "Erdbeere" });
-		setExtras(new String[] { "Erdbeersoße", "Erdbeerstücke", "Sahne" });
-		setPreis(5.5d);
+		setArt("Bällchen");
+		setSorten(new String[] { "Vanille", "Karamel" });
+		setExtras(new String[] { "Karamelsoße", "Krokant Streußeln", "Sahne" });
+		setPreis(4.5d);
 	}
 
 	/**
@@ -16,7 +16,7 @@ public class KoelnerErdbeerTraum extends Eis {
 	 */
 	@Override
 	void vorbereiten() {
-		System.out.println(getName() + " wird in der " + getBehaeltnis() + " vorbereitet.");
+		System.out.println(getName() + " wird im " + getBehaeltnis() + " vorbereitet.");
 	}
 
 	/**
