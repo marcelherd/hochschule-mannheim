@@ -28,16 +28,25 @@ public class Application {
 	}
 	
 	public static void main(String[] args) {
-		print("Please enter order: ");
-		int order = readInt();
-		
-		Application app = new Application(order);
-		
-		while (true) {
-			app.printMenu();
-			app.prompt();
-			app.printCurrentState();
-		}
+//		print("Please enter order: ");
+//		int order = readInt();
+//		
+//		Application app = new Application(order);
+//		
+//		while (true) {
+//			app.printMenu();
+//			app.prompt();
+//			app.printCurrentState();
+//		}
+		MyBTree tree = new MyBTree(1);
+		tree.insert(1);
+		tree.insert(2);
+		tree.insert(3);
+		tree.insert(4);
+		tree.insert(5);
+		tree.insert(6);
+		tree.insert(7);
+		tree.delete(2);
 	}
 	
 	private void printMenu() {

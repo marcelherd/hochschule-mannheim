@@ -183,6 +183,61 @@ public class TreeNode {
 	}
 	
 	/**
+	 * Returns true if this node contains the specified element.
+	 * 
+	 * @param o - element whose presence in this node is to be tested
+	 * @return true if this node contains the specified element
+	 */
+	public boolean contains(Comparable o) {
+		for (Comparable key : keys) {
+			if (key != null) {
+				if (o.compareTo(key) == 0) return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Returns the index of o within this node or -1 if this node does not contain o.
+	 * 
+	 * @param o - the element, whose index in this node is being searched
+	 * @return the index of o within this node or -1 if this node does not contain o
+	 */
+	public int index(Comparable o) {
+		if (! contains(o)) return -1;
+		for (int i = 0; i < keys.length; i++) {
+			if (o.compareTo(keys[i]) == 0) return i;
+		}
+		return -1;
+	}
+	
+	/**
+	 * Returns the number of keys within this node.
+	 * 
+	 * @return the number of keys within this node
+	 */
+	public int size() {
+		int size = 0;
+		for (Comparable key : keys) {
+			if (key != null) size++;
+		}
+		return size;
+	}
+	
+	/**
+	 * Returns the largest key in this node.
+	 * 
+	 * @return the largest key in this node
+	 */
+	public Comparable getMax() {
+		Comparable max = keys[0];
+		for (int i = 1; i < keys.length; i++) {
+			if (keys[i] != null && max.compareTo(keys[i]) == -1) max = keys[i];
+		}
+		return max;
+	}
+	
+	/**
 	 * Returns true if this node is a leaf.
 	 * 
 	 * @return true if this this node is a leaf

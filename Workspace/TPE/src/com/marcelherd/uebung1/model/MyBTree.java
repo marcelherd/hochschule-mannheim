@@ -6,6 +6,7 @@ import static gdi.MakeItSimple.isFileReadable;
 import static gdi.MakeItSimple.openInputFile;
 import static gdi.MakeItSimple.readLine;
 
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -34,7 +35,7 @@ public class MyBTree implements BTree {
 	public boolean insert(Comparable o) {
 		if (! isEmpty()) {
 			if (! o.getClass().equals(root.getKeys()[0].getClass())) { // compare o's type with that of an element within the tree
-				/**
+				/*
 				 * Aufgabenstellung:
 				 * > Im B-Baum sollen nicht nur Integer-Objekte verwaltet werden, sondern alle Arten von Objekten, 
 				 * > die miteinander vergleichbar sind. Es sind immer nur Elemente derselben Klasse miteinander vergleichbar!
@@ -128,9 +129,105 @@ public class MyBTree implements BTree {
 		}
 	}
 	
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void delete(Comparable obj) {
-		// TODO Auto-generated method stub
+		if (isEmpty()) return;
+		
+		// 1. find node that contains obj
+		TreeNode target = root;
+		TreeNode parent = null;
+		while (! target.contains(obj)) {
+			if (target.isLeaf()) return; // element is not in tree
+			
+			for (int i = 0; i < target.getKeys().length; i++) { // find subtree within node
+				parent = target;
+				if (target.getKeys()[i] == null || obj.compareTo(target.getKeys()[i]) == -1) {
+					target = target.getChildren()[i]; // enter left subtree
+					break;
+				}
+				if (obj.compareTo(target.getKeys()[i]) == 1 && i == target.getKeys().length - 1) {
+					target = target.getChildren()[target.getKeys().length]; // enter last subtree
+					break;
+				}
+			}
+		}
+		
+		// 2. remove obj from node
+		if (target.isLeaf()) {
+			int index = target.index(obj);
+			target.getKeys()[index] = null; // delete element
+			leftShiftKeys(target, index); // shift subsequent elements to the left
+			
+			if (target.size() < order) { // deficit
+				// 3. fix deficit
+				handleUnderflow(target, parent);
+			}
+		} else { // inner node
+			int index = target.index(obj);
+			parent = target;
+			TreeNode thatChild = target.getChildren()[index]; // subtree to the left of obj
+			while (! thatChild.isLeaf()) { // find the leaf that contains the next smallest element
+				parent = thatChild;
+				int treeIndex = 0;
+				for (int i = 1; i < thatChild.getChildren().length - 1; i++) {
+					if (thatChild.getChildren()[i] == null) break;
+					treeIndex = i;
+				}
+				thatChild = thatChild.getChildren()[treeIndex]; // until we found the leaf, always go for the subtree that is the furthest to the right
+			}
+			target.getKeys()[index] = thatChild.getMax(); // replace obj
+			thatChild.getKeys()[thatChild.index(thatChild.getMax())] = null; // remove replacement from leaf
+			leftShiftKeys(thatChild, index); // shift subsequent elements to the left
+			
+			if (thatChild.size() < order) { // deficit in leaf
+				// 3. fix deficit
+				handleUnderflow(thatChild, parent);
+			}
+		}
+	}
+	
+	/**
+	 * Fixes underflow within node
+	 * 
+	 * @param node - node that has a deficit
+	 * @param parent - parent of node
+	 */
+	private void handleUnderflow(TreeNode node, TreeNode parent) {
+		int nodeIndex = 0;
+		for (int i = 0; i < parent.getChildren().length; i++) {
+			if (parent.getChildren()[i] == node) {
+				nodeIndex = i;
+				break;
+			}
+		}
+		
+		TreeNode left = (nodeIndex > 0) ? parent.getChildren()[nodeIndex - 1 ] : null;
+		TreeNode right = (nodeIndex < parent.getChildren().length - 1) ? parent.getChildren()[nodeIndex + 1] : null;
+		
+		if (left != null && left.size() > order) { // ausgleich mit linken nachbar
+			
+		} else if (right != null && right.size() > order) { // ausgleich mit rechtem nachbar
+			
+		} else { // vereinigung
+			
+		}
+	}
+	
+	/**
+	 * Shifts all keys inside the given node to the left, starting at startIndex
+	 * 
+	 * @param node - node, whose keys are being shifted
+	 * @param startIndex - index where the first shifted key will reside
+	 */
+	private void leftShiftKeys(TreeNode node, int startIndex) {
+		Comparable[] keys = node.getKeys();
+		for (int i = startIndex; i < keys.length - 1; i++) {
+			keys[i] = keys[i + 1];
+		}
+		keys[keys.length - 1] = null;
 	}
 
 	/**
