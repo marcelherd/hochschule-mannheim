@@ -14,7 +14,7 @@ public class CarDealer {
 	private BTree cars;
 	
 	public CarDealer() {
-		cars = new MyBTree(100);
+		cars = new MyBTree(1);
 	}
 	
 	/**

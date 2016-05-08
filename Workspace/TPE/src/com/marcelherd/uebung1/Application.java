@@ -40,12 +40,13 @@ public class Application {
 //		}
 		MyBTree tree = new MyBTree(2);
 		for (int i = 1; i <= 9; i++) tree.insert(i);
-		for (int i = 11; i <= 88; i+=11) tree.insert(i);
+		for (int i = 11; i <= 99; i+=11) tree.insert(i);
+		for (int i = 111; i <= 888; i+=111) tree.insert(i);
 		//tree.insert(25); // to test vereining links
 		//tree.insert(70); // vereinigung rechts
 //		tree.delete(55);
 //		tree.delete(77); // merge left/
-		tree.delete(22);
+		tree.delete(222);
 	}
 	
 	private void printMenu() {

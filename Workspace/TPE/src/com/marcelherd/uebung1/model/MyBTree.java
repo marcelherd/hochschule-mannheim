@@ -196,6 +196,7 @@ public class MyBTree implements BTree {
 	 * @param parent - parent of node
 	 */
 	private void handleUnderflow(TreeNode node, TreeNode parent) {
+		if (parent == null) return;
 		if (parent == root) {
 			TreeNode newRoot = new TreeNode(order);
 			
