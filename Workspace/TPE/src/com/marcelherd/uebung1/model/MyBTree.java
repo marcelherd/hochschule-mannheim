@@ -196,6 +196,34 @@ public class MyBTree implements BTree {
 	 * @param parent - parent of node
 	 */
 	private void handleUnderflow(TreeNode node, TreeNode parent) {
+		if (parent == root) {
+			TreeNode newRoot = new TreeNode(order);
+			
+			// build keys for new root
+			TreeNode left = parent.getChildren()[0];
+			TreeNode right = parent.getChildren()[1];
+			Comparable[] newRootKeys = new Comparable[2 * order];
+			for (int i = 0; i < left.size(); i++) {
+				newRootKeys[i] = left.getKeys()[i];
+			}
+			newRootKeys[left.size()] = parent.getKeys()[0];
+			for (int i = 0; i < right.size(); i++) {
+				newRootKeys[i + left.size() + 1] = right.getKeys()[i];
+			}
+			newRoot.setKeys(newRootKeys);
+			
+			// build children for new root
+			TreeNode[] newRootChildren = new TreeNode[2 * order + 1];
+			for (int i = 0; i < left.children(); i++) {
+				newRootChildren[i] = left.getChildren()[i];
+			}
+			for (int i = 0; i < right.children(); i++) {
+				newRootChildren[i + left.children()] = right.getChildren()[i];
+			}
+			newRoot.setChildren(newRootChildren);
+			root = newRoot;
+			return;
+		}
 		int nodeIndex = 0;
 		for (int i = 0; i < parent.getChildren().length; i++) {
 			if (parent.getChildren()[i] == node) {
@@ -248,8 +276,8 @@ public class MyBTree implements BTree {
 				parent.getChildren()[parentIndex + 1] = null;
 				parent.getKeys()[parentKeyIndex] = null; // can cause another underflow
 				
-				if (parent.size() < order) {
-					handleUnderflow(parent, root); // TODO parent of parent
+				if (parent.size() < order) { // deficit
+					handleUnderflow(parent, findParent(parent, root));
 				}
 			} else { // merge with right sibling
 				for (int i = 0; i < node.size(); i++) {
@@ -264,12 +292,39 @@ public class MyBTree implements BTree {
 				mergedNode.setKeys(newKeys);
 				
 				// putting it all together
-				leftShiftKeys(parent, 0);
+				leftShiftKeys(parent, 0); // can cause another underflow
 				leftShiftChildren(parent);
 				parent.getChildren()[0] = mergedNode;
+				
+				if (parent.size() < order) { // deficit
+					handleUnderflow(parent, findParent(parent, root));
+				}
 			}
-			
 		}
+	}
+	
+	/**
+	 * Returns the parent of node, or null if node has no parent
+	 * 
+	 * @param node - node, whose parent is being searched for
+	 * @param container - node, within which the parent is being searched for
+	 * @return the parent of node, or null if node has no parent
+	 */
+	private TreeNode findParent(TreeNode node, TreeNode container) {
+		if (node == root) return null;
+		
+		for (TreeNode child : container.getChildren()) { // check if container is the parent of node
+			if (child == node) return container;
+		}
+		
+		if (! container.isLeaf()) { // check if a child of the container is the parent of node
+			for (TreeNode child : container.getChildren()) {
+				TreeNode result = findParent(node, child);
+				if (result != null) return result;
+			}
+		}
+		
+		return null; // could not find parent
 	}
 	
 	/**

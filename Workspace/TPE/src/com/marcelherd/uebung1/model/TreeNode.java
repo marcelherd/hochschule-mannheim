@@ -252,6 +252,19 @@ public class TreeNode {
 	}
 	
 	/**
+	 * Returns the number of children within this node.
+	 * 
+	 * @return the number of children within this node
+	 */
+	public int children() {
+		int retval = 0;
+		for (TreeNode child : children) {
+			if (child != null) retval++;
+		}
+		return retval;
+	}
+	
+	/**
 	 * Returns the largest key in this node.
 	 * 
 	 * @return the largest key in this node
