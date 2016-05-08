@@ -204,15 +204,82 @@ public class MyBTree implements BTree {
 			}
 		}
 		
-		TreeNode left = (nodeIndex > 0) ? parent.getChildren()[nodeIndex - 1 ] : null;
+		TreeNode left = (nodeIndex > 0) ? parent.getChildren()[nodeIndex - 1] : null;
 		TreeNode right = (nodeIndex < parent.getChildren().length - 1) ? parent.getChildren()[nodeIndex + 1] : null;
 		
-		if (left != null && left.size() > order) { // ausgleich mit linken nachbar
+		if (left != null && left.size() > order) { // balance with left sibling
+			Comparable leftKey = left.getMax();
+			int leftKeyIndex = left.index(leftKey);
+			Comparable parentKey = parent.getKeys()[nodeIndex - 1];
+			int parentKeyIndex = parent.index(parentKey);
+			rightShiftKeys(node);
+			node.getKeys()[0] = parentKey;
+			parent.getKeys()[parentKeyIndex] = leftKey;
+			left.getKeys()[leftKeyIndex] = null;
+		} else if (right != null && right.size() > order) { // balance with right sibling
+			Comparable rightKey = right.getMin();
+			int rightKeyIndex = right.index(rightKey);
+			Comparable parentKey = parent.getKeys()[nodeIndex];
+			int parentKeyIndex = parent.index(parentKey);
+			node.getKeys()[node.firstAvailableIndex()] = parentKey;
+			parent.getKeys()[parentKeyIndex] = rightKey;
+			leftShiftKeys(right, rightKeyIndex);
+		} else { // merge with sibling ಠ_ಠ
+			TreeNode mergedNode = new TreeNode(order);
+			Comparable[] newKeys = new Comparable[2 * order];
 			
-		} else if (right != null && right.size() > order) { // ausgleich mit rechtem nachbar
+			if (left != null) { // merge with left sibling
+				for ( int i = 0; i < left.size(); i++) { // first, insert the keys from the left sibling
+					newKeys[i] = left.getKeys()[i];
+				}
+				Comparable parentKey = parent.getKeys()[nodeIndex - 1];
+				int parentKeyIndex = parent.index(parentKey);
+				newKeys[left.size()] = parentKey; // then, insert key from parent node
+				
+				for (int i = 0; i < node.size(); i++) {
+					newKeys[i + left.size() + 1] = node.getKeys()[i]; // finally, insert the keys from this node
+				}
+				
+				mergedNode.setKeys(newKeys);
+				
+				// putting it all together
+				int parentIndex = parent.index(left);
+				parent.getChildren()[parentIndex] = mergedNode;
+				parent.getChildren()[parentIndex + 1] = null;
+				parent.getKeys()[parentKeyIndex] = null; // can cause another underflow
+				
+				if (parent.size() < order) {
+					handleUnderflow(parent, root); // TODO parent of parent
+				}
+			} else { // merge with right sibling
+				for (int i = 0; i < node.size(); i++) {
+					newKeys[i] = node.getKeys()[i]; // first, insert the keys from this node
+				}
+				Comparable parentKey = parent.getKeys()[nodeIndex];
+				newKeys[node.size()] = parentKey; // then, insert key from parent node
+				for (int i = 0; i < right.size(); i++) {
+					newKeys[i + node.size() + 1] = right.getKeys()[i]; // finally, insert the keys from the right sibling
+				}
+				
+				mergedNode.setKeys(newKeys);
+				
+				// putting it all together
+				leftShiftKeys(parent, 0);
+				leftShiftChildren(parent);
+				parent.getChildren()[0] = mergedNode;
+			}
 			
-		} else { // vereinigung
-			
+		}
+	}
+	
+	/**
+	 * Shifts all children inside the given node to the left
+	 * 
+	 * @param node - node, whose children should be shifted to the left
+	 */
+	private void leftShiftChildren(TreeNode node) {
+		for (int i = 0; i < node.getChildren().length - 1; i++) {
+			node.getChildren()[i] = node.getChildren()[i + 1];
 		}
 	}
 	
@@ -228,6 +295,18 @@ public class MyBTree implements BTree {
 			keys[i] = keys[i + 1];
 		}
 		keys[keys.length - 1] = null;
+	}
+	
+	/**
+	 * Shifts all keys inside node to the right
+	 * 
+	 * @param node - node, whose keys are being shifted to the right
+	 */
+	private void rightShiftKeys(TreeNode node) {
+		for (int i = node.getKeys().length - 1; i > 0; i--) {
+			node.getKeys()[i] = node.getKeys()[i - 1];
+		}
+		node.getKeys()[0] = null;
 	}
 
 	/**

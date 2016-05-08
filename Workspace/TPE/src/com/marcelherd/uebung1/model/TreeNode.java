@@ -200,13 +200,40 @@ public class TreeNode {
 	/**
 	 * Returns the index of o within this node or -1 if this node does not contain o.
 	 * 
-	 * @param o - the element, whose index in this node is being searched
+	 * @param o - the element, whose index in this node is being searched for
 	 * @return the index of o within this node or -1 if this node does not contain o
 	 */
 	public int index(Comparable o) {
 		if (! contains(o)) return -1;
 		for (int i = 0; i < keys.length; i++) {
 			if (o.compareTo(keys[i]) == 0) return i;
+		}
+		return -1;
+	}
+	
+	/**
+	 * Returns the index of node within this node or -1 if this node does not contain node.
+	 * 
+	 * @param node - the node, whose index in this node is being searched for
+	 * @return the index of node within this node or -1 if this node does not contain node
+	 */
+	public int index(TreeNode node) {
+		for (int i = 0; i < children.length; i++) {
+			if (node == children[i]) return i;
+		}
+		return -1;
+	}
+	
+	/**
+	 * Returns the first available (i.e. not taken) index in this node.
+	 * 
+	 * @return the first available (i.e. not taken) index in this node
+	 */
+	public int firstAvailableIndex() {
+		for (int i = 0; i < keys.length; i++) {
+			if (keys[i] == null) {
+				return i;
+			}
 		}
 		return -1;
 	}
@@ -235,6 +262,15 @@ public class TreeNode {
 			if (keys[i] != null && max.compareTo(keys[i]) == -1) max = keys[i];
 		}
 		return max;
+	}
+	
+	/**
+	 * Returns the smallest key in this node.
+	 * 
+	 * @return the smallest key in this node
+	 */
+	public Comparable getMin() {
+		return keys[0];
 	}
 	
 	/**

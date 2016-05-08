@@ -38,15 +38,14 @@ public class Application {
 //			app.prompt();
 //			app.printCurrentState();
 //		}
-		MyBTree tree = new MyBTree(1);
-		tree.insert(1);
-		tree.insert(2);
-		tree.insert(3);
-		tree.insert(4);
-		tree.insert(5);
-		tree.insert(6);
-		tree.insert(7);
-		tree.delete(2);
+		MyBTree tree = new MyBTree(2);
+		for (int i = 1; i <= 9; i++) tree.insert(i);
+		for (int i = 11; i <= 88; i+=11) tree.insert(i);
+		//tree.insert(25); // to test vereining links
+		//tree.insert(70); // vereinigung rechts
+//		tree.delete(55);
+//		tree.delete(77); // merge left/
+		tree.delete(22);
 	}
 	
 	private void printMenu() {
