@@ -197,7 +197,34 @@ public class MyBTree implements BTree {
 	 */
 	private void handleUnderflow(TreeNode node, TreeNode parent) {
 		if (parent == null) return;
-		
+		if (parent == root) {
+			TreeNode newRoot = new TreeNode(order);
+			
+			// build keys for new root
+			TreeNode left = parent.getChildren()[0];
+			TreeNode right = parent.getChildren()[1];
+			Comparable[] newRootKeys = new Comparable[2 * order];
+			for (int i = 0; i < left.size(); i++) {
+				newRootKeys[i] = left.getKeys()[i];
+			}
+			newRootKeys[left.size()] = parent.getKeys()[0];
+			for (int i = 0; i < right.size(); i++) {
+				newRootKeys[i + left.size() + 1] = right.getKeys()[i];
+			}
+			newRoot.setKeys(newRootKeys);
+			
+			// build children for new root
+			TreeNode[] newRootChildren = new TreeNode[2 * order + 1];
+			for (int i = 0; i < left.children(); i++) {
+				newRootChildren[i] = left.getChildren()[i];
+			}
+			for (int i = 0; i < right.children(); i++) {
+				newRootChildren[i + left.children()] = right.getChildren()[i];
+			}
+			newRoot.setChildren(newRootChildren);
+			root = newRoot;
+			return;
+		}
 		int nodeIndex = 0;
 		for (int i = 0; i < parent.getChildren().length; i++) {
 			if (parent.getChildren()[i] == node) {
@@ -229,7 +256,6 @@ public class MyBTree implements BTree {
 		} else { // merge with sibling ಠ_ಠ
 			TreeNode mergedNode = new TreeNode(order);
 			Comparable[] newKeys = new Comparable[2 * order];
-			TreeNode[] newChildren = new TreeNode[2 * order + 1];
 			
 			if (left != null) { // merge with left sibling
 				for ( int i = 0; i < left.size(); i++) { // first, insert the keys from the left sibling
@@ -244,15 +270,6 @@ public class MyBTree implements BTree {
 				}
 				
 				mergedNode.setKeys(newKeys);
-				
-				for (int i = 0; i < left.children(); i++) {
-					newChildren[i] = left.getChildren()[i];
-				}
-				for (int i = 0; i < node.children(); i++) {
-					newChildren[i + left.children()] = node.getChildren()[i];
-				}
-				
-				mergedNode.setChildren(newChildren);
 				
 				// putting it all together
 				int parentIndex = parent.index(left);
