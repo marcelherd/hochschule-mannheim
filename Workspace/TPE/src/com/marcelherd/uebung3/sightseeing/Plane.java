@@ -27,6 +27,14 @@ public interface Plane {
 	public void stop() throws GeneralFlightSimulatorException;
 
 	/**
+	 * Starts the airplane.
+	 * 
+	 * @throws GeneralFlightSimulatorException
+	 *             If the airplane is already flying or the doors are open.
+	 */
+	public void start() throws GeneralFlightSimulatorException;
+
+	/**
 	 * Lets the airplane go on one more kilometer, the altitude difference is
 	 * passed as parameter.
 	 * 
