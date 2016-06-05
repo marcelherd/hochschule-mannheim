@@ -1,1 +1,0 @@
-# catch-or-throw-Regel
