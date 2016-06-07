@@ -2,6 +2,7 @@ package com.marcelherd.uebung4.aufgabe3;
 
 import java.nio.BufferOverflowException;
 import java.nio.BufferUnderflowException;
+import java.util.Arrays;
 
 public class Ringpuffer {
 	
@@ -47,6 +48,15 @@ public class Ringpuffer {
 		notifyAll();
 		
 		return retval;
+	}
+
+	@Override
+	public String toString() {
+		StringBuilder builder = new StringBuilder();
+		builder.append("Ringpuffer [buffer=");
+		builder.append(Arrays.toString(buffer));
+		builder.append("]");
+		return builder.toString();
 	}
 
 }

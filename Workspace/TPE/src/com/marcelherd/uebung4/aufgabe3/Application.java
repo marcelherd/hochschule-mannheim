@@ -13,12 +13,12 @@ public class Application {
 		
 		Timer timer = new Timer(10000); // 10 seconds runtime
 		
-		Producer p1 = new Producer("Producer 1", 1000); // produces every second
+		Producer p1 = new Producer("Producer 1", 100); // produces every second
 		Producer p2 = new Producer("Producer 2", 2000); // produces every 2 seconds
 		Producer p3 = new Producer("Producer 3", 3000); // produces every 3 seconds
 		
-		Consumer c1 = new Consumer("Consumer 1", 1000); // consumes every second
-		Consumer c2 = new Consumer("Consumer 2", 2000); // consumes every 2 seconds
+		Consumer c1 = new Consumer("Consumer 1", 10000); // consumes every second
+		Consumer c2 = new Consumer("Consumer 2", 20000); // consumes every 2 seconds
 		
 		timer.start();
 		p1.start();
@@ -60,13 +60,17 @@ public class Application {
 		
 		public Consumer(String name, int speed) {
 			setName(name);
+			setDaemon(true);
 			this.speed = speed;
 		}
 		
 		@Override
 		public void run() {
 			while (active) {
-				System.out.println(getName() + " retrieved " + getRingpuffer().get());
+				synchronized (getRingpuffer()) {
+					System.out.println(getName() + " retrieved " + getRingpuffer().get() + "\n" + getRingpuffer());
+				}
+				
 				waitForIt();
 			}
 		}
@@ -87,6 +91,7 @@ public class Application {
 		
 		public Producer(String name, int speed) {
 			setName(name);
+			setDaemon(true);
 			this.speed = speed;
 		}
 		
@@ -95,9 +100,12 @@ public class Application {
 			Random random = new Random();
 			
 			while (active) {
-				int value = random.nextInt();
-				ringpuffer.put(value);
-				System.out.println(getName() + " produced " + value);
+				synchronized (getRingpuffer()) {
+					int value = random.nextInt();
+					getRingpuffer().put(value);
+					System.out.println(getName() + " produced " + value + "\n" + getRingpuffer());
+				}
+				
 				waitForIt();
 			}
 		}
