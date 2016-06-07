@@ -1,19 +1,52 @@
 package com.marcelherd.uebung4.aufgabe3;
 
+import java.nio.BufferOverflowException;
+import java.nio.BufferUnderflowException;
+
 public class Ringpuffer {
 	
-	private int[] values;
+	private int[] buffer;
+	
+	private int head;
+	private int tail;
 	
 	public Ringpuffer(int maxSize) {
-		values = new int[maxSize];
+		buffer = new int[maxSize];
 	}
 	
 	public synchronized void put(int value) {
+		if (head == (tail - 1)) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
 		
+		buffer[head++] = value;
+		head = head % buffer.length;
+		
+		notifyAll();
 	}
 	
 	public synchronized int get() {
-		return 0;
+		int retval;
+		
+		int adjTail = tail > head ? tail - buffer.length : tail;
+		if (! (adjTail < head)) {
+			try {
+				wait();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		} 
+		
+		retval = buffer[tail++];
+		tail = tail % buffer.length;
+		
+		notifyAll();
+		
+		return retval;
 	}
 
 }

@@ -95,7 +95,9 @@ public class Application {
 			Random random = new Random();
 			
 			while (active) {
-				ringpuffer.put(random.nextInt());
+				int value = random.nextInt();
+				ringpuffer.put(value);
+				System.out.println(getName() + " produced " + value);
 				waitForIt();
 			}
 		}
