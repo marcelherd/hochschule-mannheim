@@ -1,15 +1,13 @@
 package com.marcelherd.uebung4.aufgabe3;
 
-import java.nio.BufferOverflowException;
-import java.nio.BufferUnderflowException;
 import java.util.Arrays;
 
 public class Ringpuffer {
 	
-	private int[] buffer;
+	protected int[] buffer;
 	
-	private int head;
-	private int tail;
+	protected int head;
+	protected int tail;
 	
 	public Ringpuffer(int maxSize) {
 		buffer = new int[maxSize];
