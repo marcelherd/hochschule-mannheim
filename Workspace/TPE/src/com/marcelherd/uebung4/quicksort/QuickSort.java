@@ -4,51 +4,43 @@ import static gdi.MakeItSimple.*;
 
 import gdi.MISException;
 
-
 public class QuickSort implements Runnable, SortAlgorithm {
 	/*
-	 * Legend: 
-	 * protocol[0] = recursion steps 
-	 * protocol[1] = swaps 
-	 * protocol[2] = comparisons 
-	 * protocol[3] = threads created
+	 * Legend: protocol[0] = recursion steps protocol[1] = swaps protocol[2] =
+	 * comparisons protocol[3] = threads created
 	 */
-	private int[] protocol = new int[] { -1, 0, 0, 0 };
-	private Comparable[] array = new Comparable[]{};
+	private int[] protocol = new int[] { 0, 0, 0, 0 };
+	private Comparable[] array = new Comparable[] {};
 	private int lowerBorder;
 	private int upperBorder;
-	
+
 	/**
 	 * 
 	 * 
-	 * @return a protocol based on this legend:
-	 * protocol[0] = recursion steps 
-	 * protocol[1] = swaps 
-	 * protocol[2] = comparisons
-	 * protocol[3] = threads created
+	 * @return a protocol based on this legend: protocol[0] = recursion steps
+	 *         protocol[1] = swaps protocol[2] = comparisons protocol[3] =
+	 *         threads created
 	 */
 	public int[] getProtocol() {
 		return protocol;
 	}
-	
+
 	/**
 	 * Returns one part of the protocol based on the index
 	 * 
-	 * @param index 
-	 * 		based on this an another part of the protocol will be returned.
-	 * @return
-	 * 		if index = 0 -> recursion steps; 
-	 * 		if index = 1 -> swaps; 
-	 * 		if index = 2 -> comparisons; 
-	 * 		if index = 3 -> threads created
-	 * 		
-	 * @throws 
-	 * 		IllegalArgumentException if index is greater than 3 or lower than 0.
+	 * @param index
+	 *            based on this an another part of the protocol will be
+	 *            returned.
+	 * @return if index = 0 -> recursion steps; if index = 1 -> swaps; if index
+	 *         = 2 -> comparisons; if index = 3 -> threads created
+	 * 
+	 * @throws IllegalArgumentException
+	 *             if index is greater than 3 or lower than 0.
 	 */
-	public int getProtocol(int index) throws IllegalArgumentException{
-		if(index < 0){
+	public int getProtocol(int index) throws IllegalArgumentException {
+		if (index < 0) {
 			throw new IllegalArgumentException("index must be greater than or equal 0: " + index);
-		}else if(index > 3){
+		} else if (index > 3) {
 			throw new IllegalArgumentException("index must be lower or equal 3: " + index);
 		}
 		return protocol[index];
@@ -82,14 +74,15 @@ public class QuickSort implements Runnable, SortAlgorithm {
 	public void run() {
 		protocol[3]++;
 		if (upperBorder > lowerBorder && array.length > 1) {
-			protocol[0]++;
+			// TODO May remove?
+			// protocol[0]++;
 			int i = split();
 			new QuickSort(array, lowerBorder, i - 1, protocol).start();
 			new QuickSort(array, i + 1, upperBorder, protocol).start();
 		}
-		if (protocol[0] < 0) {
-			protocol[0] = 0;
-		}
+		// if (protocol[0] < 0) {
+		// protocol[0] = 0;
+		// }
 	}
 
 	/**
@@ -123,7 +116,7 @@ public class QuickSort implements Runnable, SortAlgorithm {
 	 * @param indexTwo
 	 *            The index of the second Integer
 	 * @param protocol
-	 *            Holder for protocoll data
+	 *            Holder for protocol data
 	 */
 
 	private void swap(int indexOne, int indexTwo) {
@@ -132,19 +125,34 @@ public class QuickSort implements Runnable, SortAlgorithm {
 		array[indexTwo] = temp;
 		protocol[1]++;
 	}
-	
+
 	@Override
-	public String toString(){
+	public String toString() {
 		StringBuilder retval = new StringBuilder();
-		for(int i = 0; i<array.length; i++){
+		for (int i = 0; i < array.length; i++) {
 			retval.append(array[i].toString() + "\n");
 		}
 		retval.append("Recursions: " + getProtocol(0));
 		retval.append("\nSwaps: " + getProtocol(1));
 		retval.append("\nComparisons: " + getProtocol(2));
 		retval.append("\nThreads created: " + getProtocol(3));
-		
+
 		return retval.toString();
+	}
+	/**
+	 * ...Why to hell does it not work?!
+	 * Writes the array to file.
+	 * @param filePath Path to file
+	 */
+	public void write(String filePath){
+		StringBuilder builder = new StringBuilder();
+		for(int i = 0; i<array.length; i++){
+			builder.append(array[i].toString() + " ");
+		}
+		System.out.println(builder.toString());
+		Object file = openOutputFile(filePath);
+		print(file, builder.toString());
+		closeOutputFile(file);
 	}
 
 	/**
@@ -157,23 +165,27 @@ public class QuickSort implements Runnable, SortAlgorithm {
 	 */
 	public static Integer[] getIntegerArray(String filepath) {
 		Integer[] retval;
-		if (!isFilePresent(filepath)){
+		if (!isFilePresent(filepath)) {
 			throw new MISException("File not found: " + filepath);
-		}else if(!isFileReadable(filepath)){
+		} else if (!isFileReadable(filepath)) {
 			throw new MISException("File is not readable: " + filepath);
 		}
-			Object file = openInputFile(filepath);
-			String fileAsString = "";
-			while (!isEndOfInputFile(file)) {
-				fileAsString += readLine(file);
-			}
-			String[] fileAsArray = fileAsString.split(" ");
-			retval = new Integer[fileAsArray.length];
+		Object file = openInputFile(filepath);
+		String fileAsString = "";
+		while (!isEndOfInputFile(file)) {
+			fileAsString += readLine(file);
+		}
+		String[] fileAsArray = fileAsString.split(" ");
+		retval = new Integer[fileAsArray.length];
+		if (fileAsArray[0] != "") {
 			for (int i = 0; i < fileAsArray.length; i++) {
 				retval[i] = Integer.valueOf(fileAsArray[i]);
 			}
-			closeInputFile(file);
-			return retval;
+		}else{
+			retval = new Integer[0];
+		}
+		closeInputFile(file);
+		return retval;
 	}
 
 	/**
@@ -181,7 +193,7 @@ public class QuickSort implements Runnable, SortAlgorithm {
 	 * 
 	 * @param array
 	 *            Array which should be checked
-	 * @return true if the array is sortet, fale if not
+	 * @return true if the array is sorted, false if not
 	 */
 	public static boolean checkSorted(Comparable[] array) {
 		for (int i = 1; i < array.length; i++) {
