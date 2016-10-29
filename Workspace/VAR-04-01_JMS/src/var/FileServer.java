@@ -24,7 +24,7 @@ import javax.naming.NamingException;
 
 public class FileServer implements MessageListener, AutoCloseable {
 	
-	private static Logger logger = Logger.getLogger("com.marcelherd.var.FileServer");
+	private static Logger logger = Logger.getLogger("var.FileServer");
 	private static String FILES = "files";
 	
 	private String pathToRoot;
@@ -34,6 +34,13 @@ public class FileServer implements MessageListener, AutoCloseable {
 	private MessageProducer messageProducer;
 	private MessageConsumer messageConsumer;
 	
+	/**
+	 * Creates a new FileServer.
+	 * 
+	 * @param pathToRoot - path to the root directory of queried files
+	 * @throws NamingException
+	 * @throws JMSException
+	 */
 	public FileServer(String pathToRoot) throws NamingException, JMSException {
 		this.pathToRoot = pathToRoot;
 		Context context = new InitialContext();
@@ -48,6 +55,9 @@ public class FileServer implements MessageListener, AutoCloseable {
 		logger.info("Server started with " + connection.getClientID());
 	}
 	
+	/**
+	 * Handles incoming JMS text messages.
+	 */
 	@Override
 	public void onMessage(Message message) {
 		try {
@@ -62,6 +72,14 @@ public class FileServer implements MessageListener, AutoCloseable {
 		}
 	}
 	
+	/**
+	 * Replies to JMS client file query.
+	 * Sends the queried file if it is valid.
+	 * 
+	 * @param filename - File to be sent
+	 * @param replyQueue
+	 * @throws JMSException
+	 */
 	public void reply(String filename, Destination replyQueue) throws JMSException {
 		messageProducer = session.createProducer(replyQueue);
 		
@@ -96,9 +114,16 @@ public class FileServer implements MessageListener, AutoCloseable {
 		if (connection != null) connection.close();
 	}
 	
+	/**
+	 * Checks whether the specified file is valid.
+	 * A valid file must be existing, readable, and be a normal file.
+	 * 
+	 * @param filename - File to be checked
+	 * @return true if the file is valid
+	 */
 	private boolean isValidFile(String filename) {
 		File file = new File(pathToRoot + "/" + filename);
-		return (file.exists() && file.canRead() && file.isFile());
+		return (file.isFile() && file.canRead());
 	}
 	
 	/**
@@ -114,7 +139,7 @@ public class FileServer implements MessageListener, AutoCloseable {
 			logger.setLevel(Level.ALL);
 			
 			try (FileServer fileServer = new FileServer(args[0])) {
-				for(;;){}
+				for(;;){} // just keep the server running
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
