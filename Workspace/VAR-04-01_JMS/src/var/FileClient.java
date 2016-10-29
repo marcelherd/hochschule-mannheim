@@ -1,4 +1,4 @@
-package com.marcelherd.var;
+package var;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
