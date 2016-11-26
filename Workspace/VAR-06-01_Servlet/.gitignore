@@ -1,0 +1,7 @@
+/build/
+/bin/
+/lib/
+.classpath
+.settings
+.DS_Store
+*.received
