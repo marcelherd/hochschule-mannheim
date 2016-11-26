@@ -47,9 +47,10 @@ VIEW `aufgabe_3_a` AS
     SELECT 
         `V`.`Vereins-ID` AS `Vereins-ID`,
         `V`.`Vereinsname` AS `Vereinsname`,
-        `Liga`.`Einnahmen` AS `Einnahmen`,
-        `Liga`.`1. Teilnahmejahr` AS `1. Teilnahmejahr`
+        `L`.`Einnahmen` AS `Einnahmen`,
+        `L`.`1. Teilnahmejahr` AS `1. Teilnahmejahr`
     FROM
-        (`Liga`
-        JOIN `Verein` `V` ON ((`Liga`.`Vereins-ID` = `V`.`Vereins-ID`)))
-    ORDER BY `Liga`.`Einnahmen`
+        `Liga` `L`
+            JOIN
+        `Verein` `V` ON (`L`.`Vereins-ID` = `V`.`Vereins-ID`)
+    ORDER BY `L`.`Einnahmen` ASC
