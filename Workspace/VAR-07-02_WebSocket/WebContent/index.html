@@ -1,0 +1,49 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Wahlformular</title>
+<script>
+	var socket;
+	function $(a) {
+		return document.getElementById(a);
+	}
+	window.onload = function() {
+		pathArray = window.location.pathname.split('/');
+		uri = "ws://" + window.location.host + "/" + pathArray[1] + "/election";
+		socket = new WebSocket(uri);
+		socket.onmessage = function(message) {
+			var dataObject = JSON.parse(message.data);
+			$('counter').innerHTML = dataObject.votes ;
+		};
+	}
+</script>
+
+</head>
+<body>
+	<p>Sie haben eine Stimme. Wählen Sie Ihre Kandidatin oder Ihren
+		Kandidaten:</p>
+	<p>bisher wurden so viele Stimmen abgegeben: </p><div id="counter">&nbsp;</div> 
+	<h2>Kandidaten:</h2>
+	<form action="vote" method="get">
+		<input type="hidden" name="action" value="vote" /> <select
+			name="alternative" size="5">
+			<option>Dr. Leonard Leakey Hofstadter</option>
+			<option>Dr. Dr. Sheldon Lee Cooper</option>
+			<option>Penny Hofstadter</option>
+			<option>Howard Joel Wolowitz</option>
+			<option>Dr. Rajesh „Raj“ Ramayan Koothrappali</option>
+			<option>Dr. Bernadette Maryann Rostenkowski-Wolowitz</option>
+			<option>Dr. Amy Farrah Fowler</option>
+			<option>Stuart David Bloom</option>
+			<option>Dr. Leslie Winkle</option>
+			<option>Emily Sweeney</option>
+		</select> <br /> <input type="submit" value="Stimme abgeben" />
+	</form>
+	<p>
+		Alternativ können Sie <a href="vote?action=print">das Ergebnis der
+			Wahl</a> abrufen.
+	</p>
+</body>
+</html>
